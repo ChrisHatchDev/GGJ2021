@@ -35,6 +35,14 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]private bool _isGrounded;
     private float _groundDistance = 0.2f;
 
+    [SerializeField]
+    private bool _crouchButtonPressed;
+    private float _timeCrouchHasBeenPressed = 0.0f;
+    
+    // 0 = Standing, 1 = Crouched, 2 = Prone
+    [SerializeField]
+    private int _stanceState;
+
     private GameManager _gameManager;
     private MenuManager _menuManager;
     public SoyBoySync _playerDataSync;
@@ -154,6 +162,8 @@ public class SoyCharacterController : MonoBehaviour
             {
                 _gameManager.InitializePlayerObject(this._playerDataSync, true);
                 _menuManager.InitializeUpdateEvents(this._playerDataSync);
+                _playerDataSync.onStanceChanged.AddListener(RemoteCrouchLogicResponse);
+                RemoteCrouchLogicResponse();
             }
             return;
         }
@@ -164,6 +174,8 @@ public class SoyCharacterController : MonoBehaviour
             _menuManager.InitializeUpdateEvents(this._playerDataSync);
         }
 
+        CrouchLogic();
+
         // Regardless of Player Type if we are in lobby, dont enable character controller
         if (_gameManager._gameManagerSync._gameState == 0)
         {
@@ -173,7 +185,7 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Seeker
         if (_gameManager._localPlayer._type == 1)
         {
-            if (_gameManager._gameManagerSync._gameState != 1)
+            if (_gameManager._gameManagerSync._gameState == 2)
             { 
                 GoIntoBlackScreenMode();
                 DisableCameraControls();
@@ -185,7 +197,6 @@ public class SoyCharacterController : MonoBehaviour
                 EnableCameraControls();
             }
         }
-
 
         // Player is Hider
         if (_gameManager._localPlayer._type == 0)
@@ -256,7 +267,98 @@ public class SoyCharacterController : MonoBehaviour
 
             float _speedToUse = this._playerDataSync._type == 0 ? _hiderSpeed : _seekerSpeed;
 
-            _cc.Move(_moveDir.normalized * _hiderSpeed * Time.deltaTime);
+            if (_stanceState == 0)
+            {
+                _speedToUse *= 1.0f;
+            }
+            else if (_stanceState == 1)
+            {
+                _speedToUse *= 0.8f;
+            }
+            else if (_stanceState == 2)
+            {
+                _speedToUse *= 0.5f;
+            }
+
+            _cc.Move(_moveDir.normalized * _speedToUse * Time.deltaTime);
         }
+    }
+
+    void RemoteCrouchLogicResponse ()
+    {
+        if (_playerDataSync._stance == 2)
+        {
+            Debug.Log("Should Go Prone");
+            GoProne();
+        }
+        
+        if (_playerDataSync._stance == 1)
+        {
+            Debug.Log("Should Crouch Only");
+            Crouch();
+        }
+
+        if (_playerDataSync._stance == 0)
+        {
+            StandUp();
+        }
+    }
+
+    void CrouchLogic ()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _crouchButtonPressed = true;
+            _timeCrouchHasBeenPressed = 0.0f;
+        }
+
+        if (Input.GetKeyUp(KeyCode.C))
+        {
+            _crouchButtonPressed = false;
+            _timeCrouchHasBeenPressed = 0.0f;
+        }
+
+        if (_crouchButtonPressed)
+        {
+            _timeCrouchHasBeenPressed += Time.deltaTime;
+        }
+
+        if (_crouchButtonPressed && _timeCrouchHasBeenPressed > 0.5f)
+        {
+            Debug.Log("Should Go Prone");
+            GoProne();
+        }
+        
+        if (_crouchButtonPressed && _timeCrouchHasBeenPressed < 1)
+        {
+            Debug.Log("Should Crouch Only");
+            Crouch();
+        }
+
+        if (_crouchButtonPressed == false)
+        {
+            StandUp();
+        }
+    }
+
+    void GoProne()
+    {
+        _stanceState = 2;
+        _cc.height = 0.2f;
+        _cc.center = new Vector3(_cc.center.x, -0.82f, _cc.center.z);
+    }
+
+    void Crouch()
+    {
+        _stanceState = 1;
+        _cc.height = 0.6f;
+        _cc.center = new Vector3(_cc.center.x, -0.71f, _cc.center.z);
+    }
+
+    void StandUp()
+    {
+        _stanceState = 0;
+        _cc.height = 1.2f;
+        _cc.center = new Vector3(_cc.center.x, -0.47f, _cc.center.z);
     }
 }
