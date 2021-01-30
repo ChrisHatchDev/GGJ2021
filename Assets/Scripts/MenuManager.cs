@@ -19,6 +19,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     public Text _gameStatusText;
 
+    [SerializeField]
+    public Text _hidingTimerText;
+
+    private int hidingTimer = 0;
+
     private void Start()
     {
         _lobbyTipText.text = "_UnsetLobbyTip";
@@ -33,7 +38,7 @@ public class MenuManager : MonoBehaviour
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
 
         LobbyStatusChanged();
-        UpdateGameStatusText();
+        // UpdateGameStatusText();
     }
 
     public void UpdateGameStatusText()
@@ -49,10 +54,34 @@ public class MenuManager : MonoBehaviour
         if (_gameManager._gameManagerSync._gameState == 2)
         {
             _gameStatusText.text = "Go Hide!";
+            
+            hidingTimer = 20;
+            StartCoroutine(HidingSequenceTimer());
         }
         if (_gameManager._gameManagerSync._gameState == 3)
         {
             _gameStatusText.text = "Game Over!";
+        }
+    }
+
+    IEnumerator HidingSequenceTimer()
+    {
+        hidingTimer -= 1;
+
+        if (hidingTimer <= 0)
+        {
+            _hidingTimerText.text = "Run!";
+        }
+        else
+        {
+            _hidingTimerText.text = hidingTimer.ToString();
+        }
+
+        yield return new WaitForSeconds(1);
+
+        if (hidingTimer > 0)
+        {        
+            StartCoroutine(HidingSequenceTimer());
         }
     }
 
