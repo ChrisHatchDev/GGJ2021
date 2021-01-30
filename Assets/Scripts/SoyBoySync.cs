@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Normal.Realtime;
 
 public class SoyBoySync : RealtimeComponent<PlayerDataModel>
@@ -8,13 +9,15 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     public int _type = -1;
 
     [SerializeField]
-    private MeshRenderer _meshRenderer;
+    private SkinnedMeshRenderer _meshRenderer;
 
     [SerializeField]
     private Material _hiderMaterial;
 
     [SerializeField]
     private Material _seekerMaterial;
+
+    public UnityEvent onTypeChange;
 
     private void Awake()
     {
@@ -28,8 +31,8 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     private void UpdateType(int type)
     {
         _type = type;
-
         _meshRenderer.material = _type == 0 ? _hiderMaterial : _seekerMaterial;
+        onTypeChange.Invoke();
     }
 
     public void SetPlayerType (int type)
@@ -49,7 +52,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
                 currentModel.playerType = -1;
         
             // Update the mesh render to match the new model
-            UpdateType(-1);
+            UpdateType(currentModel.playerType);
 
             // Register for events so we'll know if the color changes later
             currentModel.playerTypeDidChange += PlayerTypeDidChange;
