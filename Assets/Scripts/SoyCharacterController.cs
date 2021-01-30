@@ -16,7 +16,10 @@ public class SoyCharacterController : MonoBehaviour
     private CinemachineFreeLook _camFreeLook;
 
     [SerializeField]
-    private float _speed = 6;
+    private float _hiderSpeed = 3.5f;
+
+    [SerializeField]
+    private float _seekerSpeed = 5.0f;
 
     [SerializeField]
     private float _turnSmoothTime = 0.1f;
@@ -36,6 +39,11 @@ public class SoyCharacterController : MonoBehaviour
     private GameManager _gameManager;
     public SoyBoySync _playerDataSync;
 
+    [SerializeField]private LayerMask _shankMask;
+    [SerializeField]private float _shankDistance = 0.75f;
+    [SerializeField]private SoyBoySync _playerInRange;
+
+
     private void Awake() {
         _realtimeView = GetComponent<RealtimeView>();
         _realtimeTransform = GetComponent<RealtimeTransform>();
@@ -50,23 +58,83 @@ public class SoyCharacterController : MonoBehaviour
         _gameManager = FindObjectOfType<GameManager>();
     }
 
+    void CheckForPlayersInRange()
+    {   
+        RaycastHit _hit;
+
+        Vector3 p1 = transform.position + _cc.center;
+        float distanceToObstacle = 0;
+
+        // Cast a sphere wrapping character controller 10 meters forward
+        // to see if it is about to hit anything.
+        if (Physics.SphereCast(p1, 0.5f, transform.forward, out _hit, 2, _shankMask))
+        {
+            distanceToObstacle = _hit.distance;
+
+            // Debug.Log("Hit distance: " + distanceToObstacle);
+
+            if (distanceToObstacle < _shankDistance)
+            {
+                if (_hit.collider.tag == "SoyBoy")
+                {
+                    SoyBoySync _playersComponent = _hit.collider.GetComponent<SoyBoySync>();
+                    if (_playerInRange != _playersComponent)
+                    {
+                        _playerInRange = _playersComponent;
+                        Debug.Log("New Player in Range");
+                    }
+                }
+                else
+                {
+                    _playerInRange = null;
+                    Debug.Log("Hit something else name: " + _hit.collider.gameObject.name);
+                }
+            }
+            else
+            {
+                _playerInRange = null;
+            }
+        }
+        else
+        {
+            _playerInRange = null;
+        }
+    }
+
+    public void Shank()
+    {
+        Debug.Log("Shank called player in range: " + _playerInRange);
+
+        if (_playerInRange != null)
+        {
+            Debug.Log("Shanked this player: " + _playerInRange._isTagged);
+            _playerInRange.TagPlayer(this._playerDataSync);
+            Debug.Log("Shanked this player: " + _playerInRange._isTagged);
+        }
+    }
+
     void Update()
     {
         // If this CubePlayer prefab is not owned by this client, bail.
         if (!_realtimeView.isOwnedLocallySelf)
         {
-            if (_menuManager._remotePlayer == null)
+            if (_gameManager._remotePlayers.Contains(this._playerDataSync) == false)
             {
-                _menuManager.InitializeEvents(this._playerDataSync, true);
-                _gameManager.InitializeEvents(this._playerDataSync, true);
+                _gameManager.InitializePlayerObject(this._playerDataSync, true);
             }
             return;
         }
 
-        if (_menuManager._localPlayer == null)
+        CheckForPlayersInRange();
+
+        if (Input.GetMouseButtonDown(0))
         {
-            _menuManager.InitializeEvents(this._playerDataSync, false);
-            _gameManager.InitializeEvents(this._playerDataSync, false);
+            Shank();
+        }
+
+        if (_gameManager._localPlayer == null)
+        {
+            _gameManager.InitializePlayerObject(this._playerDataSync, false);
         }
 
         if (_camFreeLook.enabled == false) {
@@ -103,7 +171,10 @@ public class SoyCharacterController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, _smoothedAngle, 0f);
 
             Vector3 _moveDir = Quaternion.Euler(0f, _targetAngle, 0f) * Vector3.forward;
-            _cc.Move(_moveDir.normalized * _speed * Time.deltaTime);
+
+            float _speedToUse = this._playerDataSync._type == 0 ? _hiderSpeed : _seekerSpeed;
+
+            _cc.Move(_moveDir.normalized * _hiderSpeed * Time.deltaTime);
         }
     }
 }
