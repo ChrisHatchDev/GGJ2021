@@ -173,7 +173,7 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Seeker
         if (_gameManager._localPlayer._type == 1)
         {
-            if (_gameManager._gameManagerSync._gameState != 1)
+            if (_gameManager._gameManagerSync._gameState == 2)
             { 
                 GoIntoBlackScreenMode();
                 DisableCameraControls();
