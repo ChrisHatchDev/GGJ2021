@@ -33,6 +33,7 @@ public class SoyCharacterController : MonoBehaviour
     private float _groundDistance = 0.2f;
 
     private MenuManager _menuManager;
+    private GameManager _gameManager;
     public SoyBoySync _playerDataSync;
 
     private void Awake() {
@@ -42,20 +43,30 @@ public class SoyCharacterController : MonoBehaviour
 
     void Start()
     {
+        // Cursor.lockState = CursorLockMode.Locked;
         _cam = FindObjectOfType<Camera>().transform;
         _camFreeLook = _cam.GetComponent<CinemachineFreeLook>();
         _menuManager = FindObjectOfType<MenuManager>();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
     {
         // If this CubePlayer prefab is not owned by this client, bail.
         if (!_realtimeView.isOwnedLocallySelf)
+        {
+            if (_menuManager._remotePlayer == null)
+            {
+                _menuManager.InitializeEvents(this._playerDataSync, true);
+                _gameManager.InitializeEvents(this._playerDataSync, true);
+            }
             return;
+        }
 
         if (_menuManager._localPlayer == null)
         {
-            _menuManager.InitializeEvents(this._playerDataSync);
+            _menuManager.InitializeEvents(this._playerDataSync, false);
+            _gameManager.InitializeEvents(this._playerDataSync, false);
         }
 
         if (_camFreeLook.enabled == false) {

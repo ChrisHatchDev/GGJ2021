@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Normal.Realtime;
+using UnityEngine.UI;
 
-public class SoyBoySync : RealtimeComponent<PlayerDataModel>
+public class GameManagerSync : RealtimeComponent<GameDataModel>
 {
     public int _type = -1;
 
     [SerializeField]
-    private SkinnedMeshRenderer _meshRenderer;
+    private MeshRenderer _meshRenderer;
 
     [SerializeField]
-    private Material _hiderMaterial;
-
-    [SerializeField]
-    private Material _seekerMaterial;
+    private Text _gameWinnerText;
 
     public UnityEvent onTypeChange;
 
@@ -23,7 +21,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     {
     }
     
-    private void PlayerTypeDidChange(PlayerDataModel model, int type)
+    private void PlayerTypeDidChange(GameDataModel model, int type)
     {
         UpdateType(type);
     }
@@ -31,31 +29,30 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     private void UpdateType(int type)
     {
         _type = type;
-        _meshRenderer.material = _type == 0 ? _hiderMaterial : _seekerMaterial;
         onTypeChange.Invoke();
     }
 
     public void SetPlayerType (int type)
     {
-        model.playerType = type;
+        model.numberOfRounds = type;
     }
 
-    protected override void OnRealtimeModelReplaced(PlayerDataModel previousModel, PlayerDataModel currentModel) {
+    protected override void OnRealtimeModelReplaced(GameDataModel previousModel, GameDataModel currentModel) {
         if (previousModel != null) {
             // Unregister from events
-            previousModel.playerTypeDidChange -= PlayerTypeDidChange;
+            previousModel.numberOfRoundsDidChange -= PlayerTypeDidChange;
         }
         
         if (currentModel != null) {
             // If this is a model that has no data set on it, populate it with the current mesh renderer color.
             if (currentModel.isFreshModel)
-                currentModel.playerType = -1;
+                currentModel.numberOfRounds = -1;
         
             // Update the mesh render to match the new model
-            UpdateType(currentModel.playerType);
+            UpdateType(currentModel.numberOfRounds);
 
             // Register for events so we'll know if the color changes later
-            currentModel.playerTypeDidChange += PlayerTypeDidChange;
+            currentModel.numberOfRoundsDidChange += PlayerTypeDidChange;
         }
     }
 }
