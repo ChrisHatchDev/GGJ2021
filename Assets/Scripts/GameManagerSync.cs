@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameManagerSync : RealtimeComponent<GameDataModel>
 {
-    // 0 = "In Lobby", 1 = "In Game", 2 = "Game Over"
+    // 0 = "In Lobby", 1 = "In Game", 2 = "Hiding Time!",  3 = "Game Over"
     public int _gameState = 0;
 
     public string _lobbyStatus = "";

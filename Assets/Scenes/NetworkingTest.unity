@@ -442,7 +442,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47018
+  m_Name: pb_Mesh30586
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -626,7 +626,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118735362}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1708192388}
@@ -634,7 +634,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 133.8, y: 93.1}
+  m_AnchoredPosition: {x: 99, y: 111}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118735364
@@ -659,20 +659,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Player Two
-
-'
+  m_Text: Opponent
 --- !u!222 &118735365
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1582,7 +1580,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh46598
+  m_Name: pb_Mesh30158
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1819,7 +1817,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh46916
+  m_Name: pb_Mesh30476
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2296,7 +2294,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh46664
+  m_Name: pb_Mesh30224
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2553,7 +2551,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh46546
+  m_Name: pb_Mesh30098
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3716,7 +3714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -66.8, y: 93.1}
+  m_AnchoredPosition: {x: -102, y: 111}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1923035835
@@ -3741,18 +3739,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player One
+  m_Text: You
 --- !u!222 &1923035836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4144,7 +4142,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh46712
+  m_Name: pb_Mesh30272
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4345,6 +4343,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1424363024, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_Text
+      value: Game Status
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424363024, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_FontData.m_BestFit
       value: 1
       objectReference: {fileID: 0}
@@ -4354,15 +4356,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208015874852, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208015874852, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -66.8
+      value: -102
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208015874852, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 54.4
+      value: 73
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208015874853, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_Color.b
@@ -4376,29 +4378,53 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3540445208015874853, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540445208015874853, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540445208015874853, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3540445208157788376, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208157788376, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -83.29997
+      value: -87.999985
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208157788376, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -82
+      value: -105.00001
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208638302689, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208638302689, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 133.9
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 3540445208638302689, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 55.9
+      value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540445208638302718, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540445208638302718, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3540445208638302718, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3540445209440444872, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4406,11 +4432,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3540445209440444872, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 86.7
+      value: 82
       objectReference: {fileID: 0}
     - target: {fileID: 3540445209440444872, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -82
+      value: -105
       objectReference: {fileID: 0}
     - target: {fileID: 3541871539889461742, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_Name

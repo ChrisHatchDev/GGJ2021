@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {   
         Debug.Log("Game Over, All People Have Been Caught");
-        _gameManagerSync.SetGameState(2);
+        _gameManagerSync.SetGameState(3);
     }
 
     public void StartGame ()
@@ -100,9 +100,20 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        _gameManagerSync.SetGameState(1);
+        StartCoroutine(HidingSequence());
 
-        Debug.Log("Made it to start game");
+        Debug.Log("Made it to start game, hiding mode started");
+    }
+
+    IEnumerator HidingSequence()
+    {
+        Debug.Log("Start Hiding");
+
+        _gameManagerSync.SetGameState(2);
+        yield return new WaitForSeconds(20f);
+        
+        Debug.Log("Hiding has ended");
+        _gameManagerSync.SetGameState(1);
     }
 
     public void RestartGame()

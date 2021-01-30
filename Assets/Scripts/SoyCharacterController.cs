@@ -10,7 +10,7 @@ public class SoyCharacterController : MonoBehaviour
     private CharacterController _cc;
 
     [SerializeField]
-    private Transform _cam;
+    private Camera _cam;
 
     [SerializeField]
     private CinemachineFreeLook _camFreeLook;
@@ -52,7 +52,7 @@ public class SoyCharacterController : MonoBehaviour
     void Start()
     {
         // Cursor.lockState = CursorLockMode.Locked;
-        _cam = FindObjectOfType<Camera>().transform;
+        _cam = FindObjectOfType<Camera>();
         _camFreeLook = _cam.GetComponent<CinemachineFreeLook>();
         _gameManager = FindObjectOfType<GameManager>();
         _menuManager = FindObjectOfType<MenuManager>();
@@ -113,6 +113,38 @@ public class SoyCharacterController : MonoBehaviour
         }
     }
 
+    void DisableCameraControls()
+    {
+        if (_camFreeLook.enabled == true) {
+            _camFreeLook.enabled = false;
+        }
+    }
+
+    void EnableCameraControls()
+    {
+        if (_camFreeLook.enabled == false) {
+            _camFreeLook.enabled = true;
+        }
+    }
+
+    void GoIntoBlackScreenMode()
+    {
+        //Hide Camera View as Stub for Black Screen
+        if (_cam.enabled == true)
+        {
+            _cam.enabled = false;
+        }
+        DisableCameraControls();
+    }
+
+    void ExitBlackScreenMode()
+    {
+        if (_cam.enabled == false)
+        {
+            _cam.enabled = true;
+        }
+    }
+
     void Update()
     {
         // If this CubePlayer prefab is not owned by this client, bail.
@@ -132,16 +164,52 @@ public class SoyCharacterController : MonoBehaviour
             _menuManager.InitializeUpdateEvents(this._playerDataSync);
         }
 
+        // Regardless of Player Type if we are in lobby, dont enable character controller
+        if (_gameManager._gameManagerSync._gameState == 0)
+        {
+            return; // Dont allow movement
+        }
 
-        // Return if game hasnt started yet
-        if (_gameManager._gameManagerSync._gameState != 1)
+        // Player is Seeker
+        if (_gameManager._localPlayer._type == 1)
+        {
+            if (_gameManager._gameManagerSync._gameState != 1)
+            { 
+                GoIntoBlackScreenMode();
+                DisableCameraControls();
+                return; // Dont allow movement
+            }
+            else
+            {
+                ExitBlackScreenMode();
+                EnableCameraControls();
+            }
+        }
+
+
+        // Player is Hider
+        if (_gameManager._localPlayer._type == 0)
+        {
+            int _gameState = _gameManager._gameManagerSync._gameState;
+
+            if (_gameState == 0 || _gameState == 3)
+            {
+                DisableCameraControls();
+                return; // Dont allow movement
+            }
+        }
+
+        // Return if game hasnt started yet or its hiding mode and you are the hider
+        if (_gameManager._gameManagerSync._gameState == 0 || _gameManager._gameManagerSync._gameState == 3)
         {
             Debug.Log("Game hasnt started or is over, don't move player");
-            if (_camFreeLook.enabled == true) {
-                _camFreeLook.enabled = false;
-            }
+            DisableCameraControls();
 
             return;
+        }
+        else
+        {
+            EnableCameraControls();
         }
 
         CheckForPlayersInRange();
@@ -179,7 +247,7 @@ public class SoyCharacterController : MonoBehaviour
 
         if (_direction.magnitude >= 0.1f)
         {
-            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _cam.eulerAngles.y;
+            float _targetAngle = Mathf.Atan2(_direction.x, _direction.z) * Mathf.Rad2Deg + _cam.transform.eulerAngles.y;
             float _smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
 
             transform.rotation = Quaternion.Euler(0f, _smoothedAngle, 0f);

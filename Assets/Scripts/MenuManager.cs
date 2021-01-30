@@ -48,6 +48,10 @@ public class MenuManager : MonoBehaviour
         }
         if (_gameManager._gameManagerSync._gameState == 2)
         {
+            _gameStatusText.text = "Go Hide!";
+        }
+        if (_gameManager._gameManagerSync._gameState == 3)
+        {
             _gameStatusText.text = "Game Over!";
         }
     }
