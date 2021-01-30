@@ -35,8 +35,8 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]private bool _isGrounded;
     private float _groundDistance = 0.2f;
 
-    private MenuManager _menuManager;
     private GameManager _gameManager;
+    private MenuManager _menuManager;
     public SoyBoySync _playerDataSync;
 
     [SerializeField]private LayerMask _shankMask;
@@ -54,8 +54,8 @@ public class SoyCharacterController : MonoBehaviour
         // Cursor.lockState = CursorLockMode.Locked;
         _cam = FindObjectOfType<Camera>().transform;
         _camFreeLook = _cam.GetComponent<CinemachineFreeLook>();
-        _menuManager = FindObjectOfType<MenuManager>();
         _gameManager = FindObjectOfType<GameManager>();
+        _menuManager = FindObjectOfType<MenuManager>();
     }
 
     void CheckForPlayersInRange()
@@ -121,7 +121,26 @@ public class SoyCharacterController : MonoBehaviour
             if (_gameManager._remotePlayers.Contains(this._playerDataSync) == false)
             {
                 _gameManager.InitializePlayerObject(this._playerDataSync, true);
+                _menuManager.InitializeUpdateEvents(this._playerDataSync);
             }
+            return;
+        }
+
+        if (_gameManager._localPlayer == null)
+        {
+            _gameManager.InitializePlayerObject(this._playerDataSync, false);
+            _menuManager.InitializeUpdateEvents(this._playerDataSync);
+        }
+
+
+        // Return if game hasnt started yet
+        if (_gameManager._gameManagerSync._gameState != 1)
+        {
+            Debug.Log("Game hasnt started or is over, don't move player");
+            if (_camFreeLook.enabled == true) {
+                _camFreeLook.enabled = false;
+            }
+
             return;
         }
 
@@ -130,11 +149,6 @@ public class SoyCharacterController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Shank();
-        }
-
-        if (_gameManager._localPlayer == null)
-        {
-            _gameManager.InitializePlayerObject(this._playerDataSync, false);
         }
 
         if (_camFreeLook.enabled == false) {

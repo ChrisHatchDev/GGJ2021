@@ -32,16 +32,16 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
         UpdateType(type);
     }
 
-    private void PlayerIsTaggedDidChange(PlayerDataModel model, bool isTagged)
-    {
-        UpdateTaggedState(isTagged);
-    }
-
     private void UpdateType(int type)
     {
         _type = type;
         _meshRenderer.material = _type == 0 ? _hiderMaterial : _seekerMaterial;
         onTypeChange.Invoke();
+    }
+
+    private void PlayerIsTaggedDidChange(PlayerDataModel model, bool isTagged)
+    {
+        UpdateTaggedState(isTagged);
     }
 
     private void UpdateTaggedState(bool isTagged)

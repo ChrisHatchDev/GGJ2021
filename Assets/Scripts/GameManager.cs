@@ -5,32 +5,23 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    public GameManagerSync _gameManagerSync;
+
     [HideInInspector]
     public SoyBoySync _localPlayer;
 
     [HideInInspector]
     public List<SoyBoySync> _remotePlayers = new List<SoyBoySync>();
 
-    public UnityEvent OnNotEnoughPlayers;
-    public UnityEvent OnAtLeastOneSeeker;
-    public UnityEvent OnOnlyOneSeeker;
-    public UnityEvent<SoyBoySync> OnLocalPlayerJoined;
-    public UnityEvent<SoyBoySync> OnRemotePlayerJoined;
-
-    // Use Soyboysync to 
-    public UnityEvent<SoyBoySync> OnGameOver;
-
     public void InitializePlayerObject(SoyBoySync player, bool isRemote)
     {
         if (isRemote)
         {
             _remotePlayers.Add(player);
-            OnRemotePlayerJoined.Invoke(player);
         }
         else
         {
             this._localPlayer = player;
-            OnLocalPlayerJoined.Invoke(player);
         }
     }
 
@@ -41,24 +32,28 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        bool atLeastOnePlayerIsAlive = false;
-        foreach (var remoteP in _remotePlayers)
+        if (_gameManagerSync._gameState == 1 && _remotePlayers.Count > 0)
         {
-            if (remoteP._isTagged == false)
+            bool atLeastOnePlayerIsAlive = false;
+            foreach (var remoteP in _remotePlayers)
             {
-                atLeastOnePlayerIsAlive = true;
+                if (remoteP._isTagged == false)
+                {
+                    atLeastOnePlayerIsAlive = true;
+                }
             }
-        }
 
-        if (atLeastOnePlayerIsAlive == false)
-        {
-            GameOver();
+            if (atLeastOnePlayerIsAlive == false)
+            {
+                GameOver();
+            }
         }
     }
 
-    public void GameOver ()
-    {
+    private void GameOver()
+    {   
         Debug.Log("Game Over, All People Have Been Caught");
+        _gameManagerSync.SetGameState(2);
     }
 
     public void StartGame ()
@@ -66,23 +61,33 @@ public class GameManager : MonoBehaviour
         if (_remotePlayers.Count == 0)
         {
             Debug.Log("Not enough players");
-            OnNotEnoughPlayers.Invoke();
+
+            _gameManagerSync.SetLobbyStatus("Not enough players to start!");
             return;
         }
 
         bool isRemoteSeeker = false;
         foreach (var _remoteP in _remotePlayers)
         {
+            if (_localPlayer._type == -1 || _remoteP._type == -1)
+            {
+                _gameManagerSync.SetLobbyStatus("All Players Must Select a Side");
+                return;
+            }
+
             if (_remoteP._type == 1)
             {
                 isRemoteSeeker = true;
             }
         }
 
+
+
         if (_localPlayer._type == 0 && isRemoteSeeker == false)
         {
-            Debug.Log("There must be at least oen seeker");
-            OnAtLeastOneSeeker.Invoke();
+            Debug.Log("There must be at least one seeker");
+
+            _gameManagerSync.SetLobbyStatus("There needs to be at least one seeker!");
             return;
         }
 
@@ -90,10 +95,26 @@ public class GameManager : MonoBehaviour
         if (_localPlayer._type == 1 && isRemoteSeeker)
         {
             Debug.Log("There Can Only Be One Seeker");
-            OnOnlyOneSeeker.Invoke();
+
+            _gameManagerSync.SetLobbyStatus("There can only be one seeker!");
             return;
         }
 
+        _gameManagerSync.SetGameState(1);
+
         Debug.Log("Made it to start game");
+    }
+
+    public void RestartGame()
+    {
+        // Clear Previously Tagged State for Rematch
+        _localPlayer.SetTaggedState(false);
+        foreach (var remoteP in _remotePlayers)
+        {
+            remoteP.SetTaggedState(false);
+        }
+
+        _gameManagerSync.SetLobbyStatus("REMATCH!");
+        _gameManagerSync.SetGameState(0);
     }
 }
