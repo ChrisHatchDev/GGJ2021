@@ -333,7 +333,6 @@ GameObject:
   - component: {fileID: 3540445208091940323}
   - component: {fileID: 3540445208091940322}
   - component: {fileID: 3540445208091940350}
-  - component: {fileID: 3540445208091940351}
   m_Layer: 5
   m_Name: GameManager(Canvas)
   m_TagString: Untagged
@@ -443,20 +442,6 @@ MonoBehaviour:
   _remotePlayer: {fileID: 0}
   _typeText: {fileID: 3540445208015874853}
   _remotePlayerTypeText: {fileID: 3540445208638302718}
---- !u!114 &3540445208091940351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540445208091940325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbf89a3bda7154bc38f4c93c2884fa5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _localPlayer: {fileID: 0}
-  _remotePlayer: {fileID: 0}
 --- !u!1 &3540445208157788379
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +877,7 @@ GameObject:
   - component: {fileID: 3544968457175423568}
   - component: {fileID: 3510521124140558460}
   - component: {fileID: 3540445207832679815}
+  - component: {fileID: 3540445208565024016}
   m_Layer: 0
   m_Name: Realtime + Tech Stack
   m_TagString: Untagged
@@ -943,6 +929,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 6017337137166428668, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
+--- !u!114 &3540445208565024016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3541871539889461742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf89a3bda7154bc38f4c93c2884fa5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localPlayer: {fileID: 0}
+  _remotePlayer: {fileID: 0}
 --- !u!1001 &3540445207583729276
 PrefabInstance:
   m_ObjectHideFlags: 0

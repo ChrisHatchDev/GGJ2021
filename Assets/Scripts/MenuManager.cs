@@ -5,11 +5,7 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    [HideInInspector]
-    public SoyBoySync _localPlayer;
-
-    [HideInInspector]
-    public SoyBoySync _remotePlayer;
+    public GameManager _gameManager;
 
     [SerializeField]
     public Text _typeText;
@@ -17,43 +13,34 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     public Text _remotePlayerTypeText;
 
-    public void InitializeEvents(SoyBoySync player, bool isRemote)
+    private void Start()
     {
-        if (isRemote)
-        {
-            this._remotePlayer = player;
-            this._remotePlayer.onTypeChange.AddListener(UpdateTextObjects);
-        }
-        else
-        {
-            this._localPlayer = player;
-        }
     }
 
-    public void InitializeEvents(SoyBoySync player)
+    public void InitializeUpdateEvents(SoyBoySync player)
     {
-        this._localPlayer = player;
+        player.onTypeChange.AddListener(UpdateTextObjects);
     }
 
     public void ChooseHider()
     {
-        _localPlayer.SetPlayerType(0);
+        _gameManager._localPlayer.SetPlayerType(0);
         UpdateTextObjects();
     }
 
     public void ChooseSeeker()
     {
-        _localPlayer.SetPlayerType(1);
+        _gameManager._localPlayer.SetPlayerType(1);
         UpdateTextObjects();
     }
 
     private void UpdateTextObjects()
     {
-        _typeText.text = _localPlayer._type.ToString();
+        _typeText.text = _gameManager._localPlayer._type.ToString();
 
-        if (_remotePlayer)
+        foreach (var remoteP in _gameManager._remotePlayers)
         {
-            _remotePlayerTypeText.text = _remotePlayer._type.ToString();
+            _remotePlayerTypeText.text = remoteP._type.ToString();
         }
     }
 
