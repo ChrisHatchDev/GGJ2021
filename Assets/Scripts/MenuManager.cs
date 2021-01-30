@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
 
         LobbyStatusChanged();
-        // UpdateGameStatusText();
+        UpdateGameStatusText();
     }
 
     public void UpdateGameStatusText()
@@ -55,8 +55,12 @@ public class MenuManager : MonoBehaviour
         {
             _gameStatusText.text = "Go Hide!";
             
-            hidingTimer = 20;
-            StartCoroutine(HidingSequenceTimer());
+            // Janky way to prevent double corroutine counting down UI too quickly
+            if(hidingTimer == 0)
+            {
+                hidingTimer = 20;
+                StartCoroutine(HidingSequenceTimer());
+            }
         }
         if (_gameManager._gameManagerSync._gameState == 3)
         {
