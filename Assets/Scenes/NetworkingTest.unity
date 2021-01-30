@@ -1471,6 +1471,10 @@ PrefabInstance:
       propertyPath: _viewUUID
       value: a7e7f59b-db21-487a-9605-978e73a906b1
       objectReference: {fileID: 0}
+    - target: {fileID: 1611919471, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6017337137166428640, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
       propertyPath: m_RootOrder
       value: 10
