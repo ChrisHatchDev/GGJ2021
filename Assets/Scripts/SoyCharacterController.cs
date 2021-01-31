@@ -126,7 +126,7 @@ public class SoyCharacterController : MonoBehaviour
 
     public void Shank()
     {
-        _playerDataSync.SetKnifeState(_playerDataSync._knifeState);
+        _playerDataSync.SetKnifeState(_playerDataSync._knifeState + 1);
 
         _ccAnim.SetTrigger("Stab");
         _audioSource.PlayOneShot(_knifeMissAudioClip);
