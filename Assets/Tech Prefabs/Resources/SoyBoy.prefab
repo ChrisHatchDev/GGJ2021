@@ -82,8 +82,8 @@ MonoBehaviour:
   _cc: {fileID: 6017337137166428671}
   _cam: {fileID: 0}
   _camFreeLook: {fileID: 0}
-  _hiderSpeed: 3.5
-  _seekerSpeed: 5
+  _hiderSpeed: 3
+  _seekerSpeed: 4
   _turnSmoothTime: 0.1
   _gravityScale: -9.81
   _groundCheck: {fileID: 350294956}
@@ -93,7 +93,6 @@ MonoBehaviour:
   _isGrounded: 0
   _ccAnim: {fileID: 11447980288157820}
   _crouchButtonPressed: 0
-  _stanceState: 0
   _playerDataSync: {fileID: 826345857}
   _shankMask:
     serializedVersion: 2
@@ -174,6 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: -1
   _stance: 0
+  _walkingState: 0
   _isTagged: 0
   _meshRenderer: {fileID: 3029916498814619670}
   _hiderMaterial: {fileID: 2100000, guid: 2330276e68ff65a44a2e7002fd02f583, type: 2}
@@ -185,6 +185,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onStanceChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onWalkingStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &4786807517431504716

@@ -16,10 +16,10 @@ public class SoyCharacterController : MonoBehaviour
     private CinemachineFreeLook _camFreeLook;
 
     [SerializeField]
-    private float _hiderSpeed = 3.5f;
+    private float _hiderSpeed = 3.0f;
 
     [SerializeField]
-    private float _seekerSpeed = 5.0f;
+    private float _seekerSpeed = 4.0f;
 
     [SerializeField]
     private float _turnSmoothTime = 0.1f;
@@ -42,10 +42,6 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]
     private bool _crouchButtonPressed;
     private float _timeCrouchHasBeenPressed = 0.0f;
-    
-    // 0 = Standing, 1 = Crouched, 2 = Prone
-    [SerializeField]
-    private int _stanceState;
 
     private GameManager _gameManager;
     private MenuManager _menuManager;
@@ -167,7 +163,9 @@ public class SoyCharacterController : MonoBehaviour
                 _gameManager.InitializePlayerObject(this._playerDataSync, true);
                 _menuManager.InitializeUpdateEvents(this._playerDataSync);
                 _playerDataSync.onStanceChanged.AddListener(RemoteCrouchLogicResponse);
+                _playerDataSync.onWalkingStateChanged.AddListener(RemoteAnimStateUpdate);
                 RemoteCrouchLogicResponse();
+                RemoteAnimStateUpdate();
             }
             return;
         }
@@ -274,50 +272,62 @@ public class SoyCharacterController : MonoBehaviour
 
             float _speedToUse = this._playerDataSync._type == 0 ? _hiderSpeed : _seekerSpeed;
 
-            if (_stanceState == 0)
+            if (_playerDataSync._stance == 0)
             {
                 _speedToUse *= 1.0f;
             }
-            else if (_stanceState == 1)
+            else if (_playerDataSync._stance == 1)
             {
                 _speedToUse *= 0.8f;
             }
-            else if (_stanceState == 2)
+            else if (_playerDataSync._stance == 2)
             {
-                _speedToUse *= 0.5f;
+                _speedToUse *= 0.4f;
             }
             
             // Trigger Walk Animation
             if (Mathf.Abs(_vertical) > 0.1f || Mathf.Abs(_horizontal) > 0.1f)
             {
                 _ccAnim.SetFloat("WalkSpeed", 1);
+                _playerDataSync.SetWalkingStateState(1);
             }
             else
             {
                 _ccAnim.SetFloat("WalkSpeed", 0);
+                _playerDataSync.SetWalkingStateState(0);
             }
             
             _cc.Move(_moveDir.normalized * _speedToUse * Time.deltaTime);
         }
     }
 
+    void RemoteAnimStateUpdate ()
+    {
+        if (_playerDataSync._walkingState == 1)
+        {
+            _ccAnim.SetFloat("WalkSpeed", 1);
+        }
+        else
+        {
+            _ccAnim.SetFloat("WalkSpeed", 0);
+        }
+    }
+
     void RemoteCrouchLogicResponse ()
     {
-        _stanceState = _playerDataSync._stance;
-
-        if (_stanceState == 2)
+        if (_playerDataSync._stance == 2)
         {
             Debug.Log("Should Go Prone");
             GoProne();
         }
         
-        if (_stanceState == 1)
+        if (_playerDataSync._stance == 1)
         {
             Debug.Log("Should Crouch Only");
             Crouch();
         }
 
-        if (_stanceState == 0)
+        if (_playerDataSync._stance == 0)
         {
             StandUp();
         }
@@ -345,7 +355,7 @@ public class SoyCharacterController : MonoBehaviour
         if (_crouchButtonPressed && _timeCrouchHasBeenPressed > 0.5f)
         {
             Debug.Log("Should Go Prone");
-            if (_stanceState != 2)
+            if (_playerDataSync._stance != 2)
             {
                 GoProne();
             }
@@ -355,7 +365,7 @@ public class SoyCharacterController : MonoBehaviour
         {
             Debug.Log("Should Crouch Only");
             // If we are already crouched standup. If not, then crouch
-            if(_stanceState == 1 || _stanceState == 2)
+            if(_playerDataSync._stance == 1 || _playerDataSync._stance == 2)
             {
                 StandUp();
             }
@@ -368,28 +378,28 @@ public class SoyCharacterController : MonoBehaviour
 
     void GoProne()
     {
-        _stanceState = 2;
-        _ccAnim.SetInteger("Stance", _stanceState);
+        _playerDataSync.SetPlayerStance(2);
+        _ccAnim.SetInteger("Stance", _playerDataSync._stance);
 
-        _cc.height = 0.2f;
-        _cc.center = new Vector3(_cc.center.x, -0.82f, _cc.center.z);
+        _cc.height = 0.15f;
+        _cc.center = new Vector3(_cc.center.x, -0.9f, _cc.center.z);
     }
 
     void Crouch()
     {
-        _stanceState = 1;
-        _ccAnim.SetInteger("Stance", _stanceState);
+        _playerDataSync.SetPlayerStance(1);
+        _ccAnim.SetInteger("Stance", _playerDataSync._stance);
 
         _cc.height = 0.6f;
-        _cc.center = new Vector3(_cc.center.x, -0.71f, _cc.center.z);
+        _cc.center = new Vector3(_cc.center.x, -0.72f, _cc.center.z);
     }
 
     void StandUp()
     {
-        _stanceState = 0;
-        _ccAnim.SetInteger("Stance", _stanceState);
+        _playerDataSync.SetPlayerStance(0);
+        _ccAnim.SetInteger("Stance", _playerDataSync._stance);
 
         _cc.height = 1.2f;
-        _cc.center = new Vector3(_cc.center.x, -0.47f, _cc.center.z);
+        _cc.center = new Vector3(_cc.center.x, -0.46f, _cc.center.z);
     }
 }
