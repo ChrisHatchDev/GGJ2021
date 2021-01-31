@@ -94,6 +94,10 @@ public class MenuManager : MonoBehaviour
     {
         player.SetPlayerName(player.playerNames[Random.Range(0, player.playerNames.Count)]);
 
+        player.onTagged.AddListener(() => {
+            _youGotCaughtText.SetActive(true);
+        });
+
         // Spawn as Hider
         if (IsSomeoneSeeker())
         {
@@ -122,10 +126,6 @@ public class MenuManager : MonoBehaviour
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
         
         player.onTypeChange.AddListener(RefreshUIStates);
-
-        player.onTagged.AddListener(() => {
-            _youGotCaughtText.SetActive(true);
-        });
 
         LobbyStatusChanged();
         UpdateGameStatusText();

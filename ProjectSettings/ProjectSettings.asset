@@ -13,10 +13,10 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: BagOfSoy
-  productName: Hide For Your Life
+  productName: Seeker (Hide for your life)
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.9254902, g: 0.654902, b: 0.30980393, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0.14117648, g: 0.1764706, b: 0.21568629, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 0.5
@@ -263,7 +263,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: f90efd7e83f895e4b9919c0e6540bace, type: 3}
+      m_Icon: {fileID: 2800000, guid: c9bb85235eb720a4981e32a55afb0b18, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
