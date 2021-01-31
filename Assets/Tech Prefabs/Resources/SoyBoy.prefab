@@ -91,6 +91,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _isGrounded: 0
+  _ccAnim: {fileID: 11447980288157820}
+  _crouchButtonPressed: 0
+  _stanceState: 0
   _playerDataSync: {fileID: 826345857}
   _shankMask:
     serializedVersion: 2
@@ -170,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: -1
+  _stance: 0
   _isTagged: 0
   _meshRenderer: {fileID: 3029916498814619670}
   _hiderMaterial: {fileID: 2100000, guid: 2330276e68ff65a44a2e7002fd02f583, type: 2}
@@ -178,6 +182,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onTagged:
+    m_PersistentCalls:
+      m_Calls: []
+  onStanceChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &4786807517431504716
@@ -240,6 +247,11 @@ PrefabInstance:
 --- !u!4 &6253396740465324550 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1488069310267649354, guid: 4bb48528b2d68474fb0022e76f98e380, type: 3}
+  m_PrefabInstance: {fileID: 4786807517431504716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &11447980288157820 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4775649537976186672, guid: 4bb48528b2d68474fb0022e76f98e380, type: 3}
   m_PrefabInstance: {fileID: 4786807517431504716}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &3029916498814619670 stripped
