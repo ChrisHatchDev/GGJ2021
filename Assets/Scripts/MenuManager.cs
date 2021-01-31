@@ -88,6 +88,11 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         ToggleStartButton(_gameManager.CanStartGame());
+
+        if (_gameManager._localPlayer._type == 0 && _gameManager._localPlayer._isTagged)
+        {
+            _youGotCaughtText.SetActive(true);
+        }
     }
 
     public void InitializeLocalPlayerMenuItems(SoyBoySync player)
@@ -122,6 +127,12 @@ public class MenuManager : MonoBehaviour
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
         
         player.onTypeChange.AddListener(RefreshUIStates);
+        player.onTagged.AddListener(() => {
+            if (_gameManager._localPlayer._type == 0 && _gameManager._localPlayer._isTagged)
+            {
+                _youGotCaughtText.SetActive(true);
+            }
+        });
 
         LobbyStatusChanged();
         UpdateGameStatusText();
@@ -215,13 +226,6 @@ public class MenuManager : MonoBehaviour
         if (_gameManager._gameManagerSync._gameState == 2)
         {
             SetActiveMenu(1);
-
-            if (_gameManager._localPlayer._type == 0)
-            {
-                _gameManager._localPlayer.onTagged.AddListener(() => {
-                    _youGotCaughtText.SetActive(true);
-                });
-            }
 
             _gameStatusText.text = "Go Hide!";
             

@@ -138,7 +138,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     {
         _isTagged = isTagged;
 
-        if(isTagged)
+        if(_isTagged)
         {
             _meshRenderer.enabled = false;
         }
@@ -200,6 +200,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     {
         if(_taggingPlayer._type == 1)
         {
+            onTagged.Invoke();
             SetTaggedState(true);
         }
     }
