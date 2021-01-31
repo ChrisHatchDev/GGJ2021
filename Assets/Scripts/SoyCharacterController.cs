@@ -48,7 +48,7 @@ public class SoyCharacterController : MonoBehaviour
     public SoyBoySync _playerDataSync;
 
     [SerializeField]private LayerMask _shankMask;
-    [SerializeField]private float _shankDistance = 0.75f;
+    [SerializeField]private float _shankDistance = 1.2f;
     [SerializeField]private SoyBoySync _playerInRange;
 
     [SerializeField]
