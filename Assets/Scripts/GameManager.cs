@@ -56,6 +56,11 @@ public class GameManager : MonoBehaviour
         _gameManagerSync.SetGameState(3);
     }
 
+    public bool CanStartGame()
+    {
+        return _remotePlayers.Count > 0;
+    }
+
     public void StartGame ()
     {
         if (_remotePlayers.Count == 0)
@@ -80,8 +85,6 @@ public class GameManager : MonoBehaviour
                 isRemoteSeeker = true;
             }
         }
-
-
 
         if (_localPlayer._type == 0 && isRemoteSeeker == false)
         {

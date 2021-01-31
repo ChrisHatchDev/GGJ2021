@@ -15,6 +15,8 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     // 0 = Standing Still, 1 = Walking
     public int _walkingState = 0;
 
+    public string _playerName = "";
+
     public bool _isTagged = false;
 
     [SerializeField]
@@ -30,11 +32,31 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     public UnityEvent onTagged;
     public UnityEvent onStanceChanged;
     public UnityEvent onWalkingStateChanged;
+    public UnityEvent onPlayerNameChanged;
+
+    public List<string> playerNames = new List<string>();
 
     private void Awake()
     {
     }
     
+    private void PlayerNameDidChange(PlayerDataModel model, string newName)
+    {
+        UpdatePlayerName(newName);
+    }
+
+    private void UpdatePlayerName(string newName)
+    {
+        _playerName = newName;
+        onPlayerNameChanged.Invoke();
+    }
+
+    public void SetPlayerName (string newName)
+    {
+        model.playerName = newName;
+    }
+
+
     private void WalkingStateDidChange(PlayerDataModel model, int walkingState)
     {
         UpdateWalkingState(walkingState);
@@ -109,6 +131,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             previousModel.isTaggedDidChange -= PlayerIsTaggedDidChange;
             previousModel.stanceStateDidChange -= PlayerStanceDidChange;
             previousModel.walkingStateDidChange -= WalkingStateDidChange;
+            previousModel.playerNameDidChange -= PlayerNameDidChange;
         }
         
         if (currentModel != null) {
@@ -119,6 +142,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
                 currentModel.isTagged = false;
                 currentModel.stanceState = 0;
                 currentModel.walkingState = 0;
+                currentModel.playerName = "";
             }
         
             // Update the mesh render to match the new model
@@ -132,6 +156,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             currentModel.isTaggedDidChange += PlayerIsTaggedDidChange;
             currentModel.stanceStateDidChange += PlayerStanceDidChange;
             currentModel.walkingStateDidChange += WalkingStateDidChange;
+            currentModel.playerNameDidChange += PlayerNameDidChange;
         }
     }
 

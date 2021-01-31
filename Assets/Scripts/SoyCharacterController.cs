@@ -282,7 +282,7 @@ public class SoyCharacterController : MonoBehaviour
             }
             else if (_playerDataSync._stance == 2)
             {
-                _speedToUse *= 0.4f;
+                _speedToUse *= 0.65f;
             }
             
             // Trigger Walk Animation
@@ -352,7 +352,7 @@ public class SoyCharacterController : MonoBehaviour
             _timeCrouchHasBeenPressed += Time.deltaTime;
         }
 
-        if (_crouchButtonPressed && _timeCrouchHasBeenPressed > 0.5f)
+        if (_crouchButtonPressed && _timeCrouchHasBeenPressed >= 0.2f)
         {
             Debug.Log("Should Go Prone");
             if (_playerDataSync._stance != 2)
@@ -361,7 +361,7 @@ public class SoyCharacterController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && _timeCrouchHasBeenPressed < 0.5f)
+        if (Input.GetKeyDown(KeyCode.C) && _timeCrouchHasBeenPressed < 0.2f)
         {
             Debug.Log("Should Crouch Only");
             // If we are already crouched standup. If not, then crouch
@@ -381,7 +381,7 @@ public class SoyCharacterController : MonoBehaviour
         _playerDataSync.SetPlayerStance(2);
         _ccAnim.SetInteger("Stance", _playerDataSync._stance);
 
-        _cc.height = 0.15f;
+        _cc.height = 0.05f;
         _cc.center = new Vector3(_cc.center.x, -0.9f, _cc.center.z);
     }
 

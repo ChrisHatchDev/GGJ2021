@@ -15,6 +15,7 @@ public class PlayerRealtimeManager : MonoBehaviour {
     }
 
     private void DidConnectToRoom(Realtime realtime) {
+
         // Instantiate the CubePlayer for this client once we've successfully connected to the room
         Realtime.Instantiate(_playerPrefab.name,                 // Prefab name
                             position: Vector3.up,          // Start 1 meter in the air
