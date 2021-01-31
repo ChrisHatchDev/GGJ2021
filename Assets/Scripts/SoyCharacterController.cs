@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
 using Cinemachine;
+using Rewired;
 
 public class SoyCharacterController : MonoBehaviour
 {
