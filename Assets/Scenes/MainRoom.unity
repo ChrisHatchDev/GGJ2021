@@ -2285,8 +2285,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1144912362, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 1610053027}
+    - target: {fileID: 1144912362, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: _viewUUID
       value: 28ee29c8-f3f6-4380-96b4-363546db69bd
+      objectReference: {fileID: 0}
+    - target: {fileID: 1144912362, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510521124140558460, guid: b08360a603a144583948fb42d31711b0, type: 3}
+      propertyPath: _roomToJoinOnStart
+      value: GGJ21
       objectReference: {fileID: 0}
     - target: {fileID: 3541871539889461742, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_Name
