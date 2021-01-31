@@ -177,7 +177,7 @@ MonoBehaviour:
   _isTagged: 0
   _meshRenderer: {fileID: 3029916498814619670}
   _hiderMaterial: {fileID: 2100000, guid: 2330276e68ff65a44a2e7002fd02f583, type: 2}
-  _seekerMaterial: {fileID: 2100000, guid: f6b997548a9a646d8a73e64905e42282, type: 2}
+  _seekerMaterial: {fileID: 2100000, guid: d35ce86c7c56f774aa4383b4ea48f7b9, type: 2}
   onTypeChange:
     m_PersistentCalls:
       m_Calls: []
