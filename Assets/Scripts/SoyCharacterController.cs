@@ -136,7 +136,7 @@ public class SoyCharacterController : MonoBehaviour
             SoyBoySync _playerSync = playerInRange.GetComponent<SoyBoySync>();
 
             Debug.Log("Shanked this player: " + _playerSync._playerName);
-            _audioSource.PlayOneShot(_knifeHitAudioClip, 2);
+            _audioSource.PlayOneShot(_knifeHitAudioClip, 3);
             _playerSync.TagPlayer(this._playerDataSync);
         }
     }
@@ -432,8 +432,6 @@ public class SoyCharacterController : MonoBehaviour
 
         _cc.height = 0.05f;
         _cc.center = new Vector3(_cc.center.x, -0.9f, _cc.center.z);
-
-        _audioSource.PlayOneShot(_deathAudioClips[0], 0.25f);
     }
 
     void Crouch()

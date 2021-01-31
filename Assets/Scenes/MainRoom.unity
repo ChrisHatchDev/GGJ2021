@@ -19594,10 +19594,6 @@ PrefabInstance:
       propertyPath: _viewUUID
       value: e0cfa6a8-0f96-4641-8fc2-3f6a0a9c1549
       objectReference: {fileID: 0}
-    - target: {fileID: 1611919471, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
-      propertyPath: _isRootPrefabView
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6017337137166428640, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
       propertyPath: m_RootOrder
       value: 1
