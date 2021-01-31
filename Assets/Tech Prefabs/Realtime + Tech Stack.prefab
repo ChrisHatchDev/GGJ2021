@@ -1822,12 +1822,12 @@ MonoBehaviour:
   m_Script: {fileID: -363599832, guid: c424820a8880b8845bda10ec0b41507e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _realtime: {fileID: 0}
+  _realtime: {fileID: 3510521124140558460}
   _sceneViewUUID: 
   _viewUUID: 
   _sceneViewPreventOwnershipTakeover: 0
   _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 1
+  _isRootPrefabView: 0
   _components:
   - componentID: 1
     component: {fileID: 1144912361}
@@ -1867,37 +1867,65 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_XAxis.m_MaxSpeed
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_YAxis.m_MaxSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Height
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_Orbits.Array.data[1].m_Radius
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_Orbits.Array.data[2].m_Radius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.7062
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.203177
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9656391
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.2598869
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000025330587
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000681731
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1910,6 +1938,10 @@ PrefabInstance:
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5021524323813453895, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
