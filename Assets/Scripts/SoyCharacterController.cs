@@ -54,6 +54,18 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]
     private GameObject _knife;
 
+    [SerializeField]
+    public AudioSource _audioSource;
+
+    [SerializeField]
+    private AudioClip[] _deathAudioClips;
+    
+    [SerializeField]
+    private AudioClip _knifeHitAudioClip;
+
+    [SerializeField]
+    private AudioClip _knifeMissAudioClip;
+
     private void Awake() {
         _realtimeView = GetComponent<RealtimeView>();
         _realtimeTransform = GetComponent<RealtimeTransform>();
@@ -114,10 +126,15 @@ public class SoyCharacterController : MonoBehaviour
     public void Shank()
     {
         _ccAnim.SetTrigger("Stab");
+        _playerDataSync.SetKnifeState(1);
+
+        _audioSource.PlayOneShot(_knifeMissAudioClip);
 
         if (_playerInRange != null)
         {
             Debug.Log("Shanked this player: " + _playerInRange._isTagged);
+
+            _audioSource.PlayOneShot(_knifeHitAudioClip);
             _playerInRange.TagPlayer(this._playerDataSync);
         }
     }
@@ -149,8 +166,22 @@ public class SoyCharacterController : MonoBehaviour
         }
     }
 
+    void PlayDeathSound()
+    {
+        _audioSource.PlayOneShot(_deathAudioClips[Random.Range(0, _deathAudioClips.Length)]);
+    }
+
     void Update()
     {
+        if (this._playerDataSync._type == 0)
+        {
+            _knife.SetActive(false);
+        }
+        else
+        {
+            _knife.SetActive(true);
+        }
+
         // If this CubePlayer prefab is not owned by this client, bail.
         if (!_realtimeView.isOwnedLocallySelf)
         {
@@ -160,6 +191,8 @@ public class SoyCharacterController : MonoBehaviour
                 _menuManager.InitializeUpdateEvents(this._playerDataSync);
                 _playerDataSync.onStanceChanged.AddListener(RemoteCrouchLogicResponse);
                 _playerDataSync.onWalkingStateChanged.AddListener(RemoteAnimStateUpdate);
+                _playerDataSync.onKnifeStateChanged.AddListener(RemoteAnimStateUpdate);
+
                 RemoteCrouchLogicResponse();
                 RemoteAnimStateUpdate();
             }
@@ -171,6 +204,8 @@ public class SoyCharacterController : MonoBehaviour
             _gameManager.InitializePlayerObject(this._playerDataSync, false);
             _menuManager.InitializeUpdateEvents(this._playerDataSync);
             _menuManager.InitializeLocalPlayerMenuItems(this._playerDataSync);
+
+            this._playerDataSync.onTagged.AddListener(PlayDeathSound);
         }
 
         // Maybe move crouch further down to disable it while in lobby, but for now have fun
@@ -185,7 +220,6 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Seeker
         if (_gameManager._localPlayer._type == 1)
         {
-            _knife.SetActive(true);
 
             if (_gameManager._gameManagerSync._gameState == 2)
             { 
@@ -203,8 +237,6 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Hider
         if (_gameManager._localPlayer._type == 0)
         {
-            _knife.SetActive(false);
-
             int _gameState = _gameManager._gameManagerSync._gameState;
 
             if (_gameState == 0 || _gameState == 3)
@@ -306,6 +338,11 @@ public class SoyCharacterController : MonoBehaviour
 
     void RemoteAnimStateUpdate ()
     {
+        if (_playerDataSync._knifeState == 1)
+        {
+            _ccAnim.SetTrigger("Stab");
+        }
+
         if (_playerDataSync._walkingState == 1)
         {
             _ccAnim.SetFloat("WalkSpeed", 1);

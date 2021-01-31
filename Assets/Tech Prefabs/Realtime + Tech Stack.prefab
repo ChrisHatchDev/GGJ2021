@@ -2985,6 +2985,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -2.046
       objectReference: {fileID: 0}
+    - target: {fileID: 1002354470, guid: 139980a8bd2c748f3ac7e7feda56861e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -42
+      objectReference: {fileID: 0}
     - target: {fileID: 1230774010925154676, guid: 139980a8bd2c748f3ac7e7feda56861e, type: 3}
       propertyPath: m_Name
       value: SeekerCard
@@ -3080,6 +3084,10 @@ PrefabInstance:
     - target: {fileID: 1230774012244110674, guid: 139980a8bd2c748f3ac7e7feda56861e, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1230774012244110677, guid: 139980a8bd2c748f3ac7e7feda56861e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 2321225561730598622, guid: 139980a8bd2c748f3ac7e7feda56861e, type: 3}
       propertyPath: m_StaticEditorFlags

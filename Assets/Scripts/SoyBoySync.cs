@@ -15,6 +15,9 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     // 0 = Standing Still, 1 = Walking
     public int _walkingState = 0;
 
+    // 0 = Not Stabbing, 1 = Stabbing
+    public int _knifeState = 0;
+
     public string _playerName = "";
 
     public bool _isTagged = false;
@@ -32,6 +35,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     public UnityEvent onTagged;
     public UnityEvent onStanceChanged;
     public UnityEvent onWalkingStateChanged;
+    public UnityEvent onKnifeStateChanged;
     public UnityEvent onPlayerNameChanged;
 
     public List<string> playerNames = new List<string>();
@@ -54,6 +58,23 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     public void SetPlayerName (string newName)
     {
         model.playerName = newName;
+    }
+
+
+    private void KnifeAnimStateDidChange(PlayerDataModel model, int knifeAnimState)
+    {
+        UpdateKnifeState(knifeAnimState);
+    }
+
+    private void UpdateKnifeState(int knifeAnimState)
+    {
+        _knifeState = knifeAnimState;
+        onKnifeStateChanged.Invoke();
+    }
+
+    public void SetKnifeState (int knifeAnimState)
+    {
+        model.knifeState = knifeAnimState;
     }
 
 
@@ -131,6 +152,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             previousModel.isTaggedDidChange -= PlayerIsTaggedDidChange;
             previousModel.stanceStateDidChange -= PlayerStanceDidChange;
             previousModel.walkingStateDidChange -= WalkingStateDidChange;
+            previousModel.knifeStateDidChange -= KnifeAnimStateDidChange;
             previousModel.playerNameDidChange -= PlayerNameDidChange;
         }
         
@@ -142,6 +164,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
                 currentModel.isTagged = false;
                 currentModel.stanceState = 0;
                 currentModel.walkingState = 0;
+                currentModel.knifeState = 0;
                 // currentModel.playerName = "";
             }
         
@@ -150,12 +173,15 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             UpdateTaggedState(currentModel.isTagged);
             UpdateStance(currentModel.stanceState);
             UpdateWalkingState(currentModel.walkingState);
+            UpdatePlayerName(currentModel.playerName);
+            UpdateKnifeState(currentModel.knifeState);
 
             // Register for events so we'll know if the color changes later
             currentModel.playerTypeDidChange += PlayerTypeDidChange;
             currentModel.isTaggedDidChange += PlayerIsTaggedDidChange;
             currentModel.stanceStateDidChange += PlayerStanceDidChange;
             currentModel.walkingStateDidChange += WalkingStateDidChange;
+            currentModel.knifeStateDidChange += KnifeAnimStateDidChange;
             currentModel.playerNameDidChange += PlayerNameDidChange;
         }
     }
