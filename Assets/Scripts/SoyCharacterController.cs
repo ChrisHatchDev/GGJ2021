@@ -51,6 +51,8 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]private float _shankDistance = 0.75f;
     [SerializeField]private SoyBoySync _playerInRange;
 
+    [SerializeField]
+    private GameObject _knife;
 
     private void Awake() {
         _realtimeView = GetComponent<RealtimeView>();
@@ -111,6 +113,8 @@ public class SoyCharacterController : MonoBehaviour
 
     public void Shank()
     {
+        _ccAnim.SetTrigger("Stab");
+
         if (_playerInRange != null)
         {
             Debug.Log("Shanked this player: " + _playerInRange._isTagged);
@@ -181,6 +185,8 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Seeker
         if (_gameManager._localPlayer._type == 1)
         {
+            _knife.SetActive(true);
+
             if (_gameManager._gameManagerSync._gameState == 2)
             { 
                 GoIntoBlackScreenMode();
@@ -197,6 +203,8 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Hider
         if (_gameManager._localPlayer._type == 0)
         {
+            _knife.SetActive(false);
+
             int _gameState = _gameManager._gameManagerSync._gameState;
 
             if (_gameState == 0 || _gameState == 3)

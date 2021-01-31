@@ -99,6 +99,7 @@ MonoBehaviour:
     m_Bits: 119
   _shankDistance: 10
   _playerInRange: {fileID: 0}
+  _knife: {fileID: 3685592813429091227}
 --- !u!143 &6017337137166428671
 CharacterController:
   m_ObjectHideFlags: 0
@@ -275,5 +276,10 @@ Animator:
 --- !u!137 &3029916498814619670 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7521650279702089562, guid: 4bb48528b2d68474fb0022e76f98e380, type: 3}
+  m_PrefabInstance: {fileID: 4786807517431504716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3685592813429091227 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8163886144195458263, guid: 4bb48528b2d68474fb0022e76f98e380, type: 3}
   m_PrefabInstance: {fileID: 4786807517431504716}
   m_PrefabAsset: {fileID: 0}

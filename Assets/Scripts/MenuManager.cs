@@ -53,7 +53,13 @@ public class MenuManager : MonoBehaviour
     public Text _gameStatusText;
 
     [SerializeField]
-    public Text _hidingTimerText;
+    public Text _seekerTimerText;
+
+    [SerializeField]
+    public Text _hiderTimerText;
+
+    [SerializeField]
+    public Text _hiderTimerSubtitle;
 
     [SerializeField]
     public Text _objectiveText;
@@ -278,11 +284,20 @@ public class MenuManager : MonoBehaviour
 
         if (hidingTimer <= 0)
         {
-            _hidingTimerText.text = "Run!";
+            _seekerTimerText.text = "Seek!";
+            _hiderTimerText.text = "Shhh!!!";
+
+            yield return new WaitForSeconds(0.8f);
+            _hiderTimerText.enabled = false;
+            _hiderTimerSubtitle.enabled = false;
         }
         else
         {
-            _hidingTimerText.text = hidingTimer.ToString();
+            _seekerTimerText.text = hidingTimer.ToString();
+            
+            _hiderTimerText.text = hidingTimer.ToString();
+            _hiderTimerText.enabled = true;
+            _hiderTimerSubtitle.enabled = true;
         }
 
         yield return new WaitForSeconds(1);
