@@ -126,8 +126,9 @@ public class SoyCharacterController : MonoBehaviour
 
     public void Shank()
     {
-        _ccAnim.SetTrigger("Stab");
         _playerDataSync.SetKnifeState(_playerDataSync._knifeState);
+
+        _ccAnim.SetTrigger("Stab");
         _audioSource.PlayOneShot(_knifeMissAudioClip);
 
         foreach (var playerInRange in _playersInRange)
@@ -197,7 +198,6 @@ public class SoyCharacterController : MonoBehaviour
 
                 RemoteCrouchLogicResponse();
                 RemoteAnimStateUpdate();
-                OnKnifeStateChange();
             }
             return;
         }
@@ -345,14 +345,9 @@ public class SoyCharacterController : MonoBehaviour
     {
         Debug.Log("Knife Status Changed on remote player");
 
-        if (_playerDataSync._knifeState == 1)
-        {
-            // Reset since we use a trigger
-            _playerDataSync._knifeState = 0;
-            _playerDataSync.SetKnifeState(0);
-            _ccAnim.SetTrigger("Stab");
-            _audioSource.PlayOneShot(_knifeMissAudioClip);
-        }
+        // Reset since we use a trigger
+        _ccAnim.SetTrigger("Stab");
+        _audioSource.PlayOneShot(_knifeMissAudioClip);
     }
 
     void RemoteAnimStateUpdate ()
