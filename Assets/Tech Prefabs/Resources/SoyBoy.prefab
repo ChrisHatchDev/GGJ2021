@@ -99,7 +99,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _shankDistance: 1
-  _playerInRange: {fileID: 0}
+  _playersInRange: []
   _knife: {fileID: 3685592813429091227}
   _audioSource: {fileID: 991949808}
   _deathAudioClips:

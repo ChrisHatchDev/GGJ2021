@@ -2296,10 +2296,6 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3510521124140558460, guid: b08360a603a144583948fb42d31711b0, type: 3}
-      propertyPath: _roomToJoinOnStart
-      value: GGJ21
-      objectReference: {fileID: 0}
     - target: {fileID: 3541871539889461742, guid: b08360a603a144583948fb42d31711b0, type: 3}
       propertyPath: m_Name
       value: Realtime + Tech Stack
@@ -19573,10 +19569,6 @@ PrefabInstance:
     - target: {fileID: 1611919471, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
       propertyPath: _viewUUID
       value: e0cfa6a8-0f96-4641-8fc2-3f6a0a9c1549
-      objectReference: {fileID: 0}
-    - target: {fileID: 1611919471, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
-      propertyPath: _isRootPrefabView
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6017337137166428640, guid: ae6034e5a670d4ff68b7af448c2f58d5, type: 3}
       propertyPath: m_RootOrder

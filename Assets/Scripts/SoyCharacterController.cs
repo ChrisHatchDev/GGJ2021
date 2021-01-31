@@ -48,7 +48,7 @@ public class SoyCharacterController : MonoBehaviour
     public SoyBoySync _playerDataSync;
 
     [SerializeField]private LayerMask _shankMask;
-    [SerializeField]private float _shankDistance = 1.2f;
+    [SerializeField]private float _shankDistance = 0.8f;
     [SerializeField]private Collider[] _playersInRange;
 
     [SerializeField]
@@ -83,8 +83,7 @@ public class SoyCharacterController : MonoBehaviour
     void CheckForPlayersInRange()
     {   
 
-        _playersInRange = Physics.OverlapSphere(transform.position, 1.0f, _shankMask);
-
+        _playersInRange = Physics.OverlapSphere(transform.position, _shankDistance, _shankMask);
 
         // Vector3 p1 = transform.position + _cc.center;
         // float distanceToObstacle = 0;
@@ -135,7 +134,7 @@ public class SoyCharacterController : MonoBehaviour
         {
             SoyBoySync _playerSync = playerInRange.GetComponent<SoyBoySync>();
 
-            Debug.Log("Shanked this player: " + _playerSync._isTagged);
+            Debug.Log("Shanked this player: " + _playerSync._playerName);
             _audioSource.PlayOneShot(_knifeHitAudioClip, 2);
             _playerSync.TagPlayer(this._playerDataSync);
         }
@@ -208,6 +207,8 @@ public class SoyCharacterController : MonoBehaviour
             _menuManager.InitializeLocalPlayerMenuItems(this._playerDataSync);
 
             this._playerDataSync.onTagged.AddListener(PlayDeathSound);
+
+            this.gameObject.layer = 7;
         }
 
         // Maybe move crouch further down to disable it while in lobby, but for now have fun
@@ -342,6 +343,9 @@ public class SoyCharacterController : MonoBehaviour
     {
         if (_playerDataSync._knifeState == 1)
         {
+            // Reset since we use a trigger
+            _playerDataSync._knifeState = 0;
+            _playerDataSync.SetKnifeState(0);
             _ccAnim.SetTrigger("Stab");
         }
 
