@@ -53,7 +53,15 @@ public class GameManagerSync : RealtimeComponent<GameDataModel>
     public void SetGameState (int gameState)
     {
         model.gameState = gameState;
+
+        if (gameState == 0 || gameState == 3)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        if (gameState == 1 || gameState == 2)
+        {
             Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
 
