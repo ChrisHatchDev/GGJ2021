@@ -12,6 +12,9 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     // 0 = Standing 1 = Crouched 2 = Proned
     public int _stance = 0;
 
+    // 0 = Standing Still, 1 = Walking
+    public int _walkingState = 0;
+
     public bool _isTagged = false;
 
     [SerializeField]
@@ -26,11 +29,30 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     public UnityEvent onTypeChange;
     public UnityEvent onTagged;
     public UnityEvent onStanceChanged;
+    public UnityEvent onWalkingStateChanged;
 
     private void Awake()
     {
     }
     
+    private void WalkingStateDidChange(PlayerDataModel model, int walkingState)
+    {
+        UpdateWalkingState(walkingState);
+    }
+
+    private void UpdateWalkingState(int walkingState)
+    {
+        _walkingState = walkingState;
+        onWalkingStateChanged.Invoke();
+    }
+
+    public void SetWalkingStateState (int walkingState)
+    {
+        model.walkingState = walkingState;
+    }
+
+
+
     private void PlayerStanceDidChange(PlayerDataModel model, int stance)
     {
         UpdateStance(stance);
@@ -86,6 +108,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             previousModel.playerTypeDidChange -= PlayerTypeDidChange;
             previousModel.isTaggedDidChange -= PlayerIsTaggedDidChange;
             previousModel.stanceStateDidChange -= PlayerStanceDidChange;
+            previousModel.walkingStateDidChange -= WalkingStateDidChange;
         }
         
         if (currentModel != null) {
@@ -94,17 +117,21 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
             {
                 currentModel.playerType = -1;
                 currentModel.isTagged = false;
+                currentModel.stanceState = 0;
+                currentModel.walkingState = 0;
             }
         
             // Update the mesh render to match the new model
             UpdateType(currentModel.playerType);
             UpdateTaggedState(currentModel.isTagged);
             UpdateStance(currentModel.stanceState);
+            UpdateWalkingState(currentModel.walkingState);
 
             // Register for events so we'll know if the color changes later
             currentModel.playerTypeDidChange += PlayerTypeDidChange;
             currentModel.isTaggedDidChange += PlayerIsTaggedDidChange;
             currentModel.stanceStateDidChange += PlayerStanceDidChange;
+            currentModel.walkingStateDidChange += WalkingStateDidChange;
         }
     }
 

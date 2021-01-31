@@ -188,7 +188,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3544968457175423568}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &196536153
 MonoBehaviour:
@@ -1217,8 +1217,8 @@ RectTransform:
   - {fileID: 1923035834}
   - {fileID: 118735363}
   - {fileID: 424991857}
-  m_Father: {fileID: 8399839944786400826}
-  m_RootOrder: 0
+  m_Father: {fileID: 3544968457175423568}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1762,6 +1762,7 @@ Transform:
   m_Children:
   - {fileID: 8399839944786400826}
   - {fileID: 940288820}
+  - {fileID: 3540445208091940321}
   - {fileID: 196536154}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1822,12 +1823,12 @@ MonoBehaviour:
   m_Script: {fileID: -363599832, guid: c424820a8880b8845bda10ec0b41507e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _realtime: {fileID: 3510521124140558460}
+  _realtime: {fileID: 0}
   _sceneViewUUID: 
   _viewUUID: 
   _sceneViewPreventOwnershipTakeover: 0
   _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 0
+  _isRootPrefabView: 1
   _components:
   - componentID: 1
     component: {fileID: 1144912361}
@@ -1869,7 +1870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453891, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_XAxis.m_MaxSpeed
@@ -1929,7 +1930,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 60
+      value: 22.02
       objectReference: {fileID: 0}
     - target: {fileID: 5021524323813453894, guid: da5c2bfb218474a43ad715537f78d1ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

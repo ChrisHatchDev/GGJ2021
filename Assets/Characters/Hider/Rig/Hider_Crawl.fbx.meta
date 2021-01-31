@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 8ab7f1544c4624447a69e15ef7abf9c5
+guid: b8c5ba25e9de54aa8901d7e4be86fa96
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: 8941070389645215903
-    second: Hider_Laydown
+      74: -7998579122992584828
+    second: Hider_Crawl
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,8 +35,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Hider_Laydown
-      takeName: Hider_Laydown
+      name: Hider_Crawl
+      takeName: Hider_Crawl
       internalID: 0
       firstFrame: 1
       lastFrame: 60
@@ -46,8 +46,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
