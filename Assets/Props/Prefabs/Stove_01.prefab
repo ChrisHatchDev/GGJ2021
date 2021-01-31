@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2767228992473671054}
   - component: {fileID: 3635923590665238787}
   - component: {fileID: 8901530064805392068}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collision (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 6828886734294977449}
   - component: {fileID: 2474365200619578480}
   - component: {fileID: 4401624533614344441}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collision (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 4474143258187677866}
   - component: {fileID: 789937807445200485}
   - component: {fileID: 2572462447205176635}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collision (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 599005158583832773}
   - component: {fileID: 1270482186658531601}
   - component: {fileID: 5559387570244438739}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collision (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

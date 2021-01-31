@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4215194519433296633}
   - component: {fileID: 4215194519433296630}
   - component: {fileID: 4215194519433296631}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 4215194519448650341}
   - component: {fileID: 4215194519448650338}
   - component: {fileID: 4215194519448650339}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube_Collision (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 4215194520240644426}
   - component: {fileID: 4215194520240644427}
   - component: {fileID: 4215194520240644424}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube_Collision (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 4215194520248126450}
   - component: {fileID: 4215194520248126451}
   - component: {fileID: 4215194520248126448}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube_Collision (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

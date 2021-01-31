@@ -89,13 +89,13 @@ public class SoyCharacterController : MonoBehaviour
 
         // Cast a sphere wrapping character controller 10 meters forward
         // to see if it is about to hit anything.
-        if (Physics.SphereCast(p1, 0.5f, transform.forward, out _hit, 2, _shankMask))
+        if (Physics.SphereCast(p1, 10.0f, transform.forward, out _hit, 2, _shankMask))
         {
             distanceToObstacle = _hit.distance;
 
             // Debug.Log("Hit distance: " + distanceToObstacle);
 
-            if (distanceToObstacle < _shankDistance)
+            if (distanceToObstacle < 1)
             {
                 if (_hit.collider.tag == "SoyBoy")
                 {
