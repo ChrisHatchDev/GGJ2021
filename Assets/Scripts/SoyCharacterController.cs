@@ -49,7 +49,7 @@ public class SoyCharacterController : MonoBehaviour
 
     [SerializeField]private LayerMask _shankMask;
     [SerializeField]private float _shankDistance = 1.2f;
-    [SerializeField]private SoyBoySync _playerInRange;
+    [SerializeField]private Collider[] _playersInRange;
 
     [SerializeField]
     private GameObject _knife;
@@ -82,60 +82,62 @@ public class SoyCharacterController : MonoBehaviour
 
     void CheckForPlayersInRange()
     {   
-        RaycastHit _hit;
 
-        Vector3 p1 = transform.position + _cc.center;
-        float distanceToObstacle = 0;
+        _playersInRange = Physics.OverlapSphere(transform.position, 1.0f, _shankMask);
 
-        // Cast a sphere wrapping character controller 10 meters forward
-        // to see if it is about to hit anything.
-        if (Physics.SphereCast(p1, 10.0f, transform.forward, out _hit, 2, _shankMask))
-        {
-            distanceToObstacle = _hit.distance;
 
-            // Debug.Log("Hit distance: " + distanceToObstacle);
+        // Vector3 p1 = transform.position + _cc.center;
+        // float distanceToObstacle = 0;
 
-            if (distanceToObstacle < 1)
-            {
-                if (_hit.collider.tag == "SoyBoy")
-                {
-                    SoyBoySync _playersComponent = _hit.collider.GetComponent<SoyBoySync>();
-                    if (_playerInRange != _playersComponent)
-                    {
-                        _playerInRange = _playersComponent;
-                        Debug.Log("New Player in Range");
-                    }
-                }
-                else
-                {
-                    _playerInRange = null;
-                    Debug.Log("Hit something else name: " + _hit.collider.gameObject.name);
-                }
-            }
-            else
-            {
-                _playerInRange = null;
-            }
-        }
-        else
-        {
-            _playerInRange = null;
-        }
+        // // Cast a sphere wrapping character controller 10 meters forward
+        // // to see if it is about to hit anything.
+        // if (Physics.OverlapSphere(transform.position, 0.5f, transform.forward, out _hit, 5, _shankMask))
+        // {
+        //     distanceToObstacle = _hit.distance;
+
+        //     Debug.Log("Hit distance: " + distanceToObstacle);
+
+        //     if (distanceToObstacle < _shankDistance)
+        //     {
+        //         if (_hit.collider.tag == "SoyBoy")
+        //         {
+        //             SoyBoySync _playersComponent = _hit.collider.GetComponent<SoyBoySync>();
+        //             if (_playerInRange != _playersComponent)
+        //             {
+        //                 _playerInRange = _playersComponent;
+        //                 Debug.Log("New Player in Range");
+        //             }
+        //         }
+        //         else
+        //         {
+        //             _playerInRange = null;
+        //             Debug.Log("Hit something else name: " + _hit.collider.gameObject.name);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         _playerInRange = null;
+        //     }
+        // }
+        // else
+        // {
+        //     _playerInRange = null;
+        // }
     }
 
     public void Shank()
     {
         _ccAnim.SetTrigger("Stab");
         _playerDataSync.SetKnifeState(1);
-
         _audioSource.PlayOneShot(_knifeMissAudioClip);
 
-        if (_playerInRange != null)
+        foreach (var playerInRange in _playersInRange)
         {
-            Debug.Log("Shanked this player: " + _playerInRange._isTagged);
+            SoyBoySync _playerSync = playerInRange.GetComponent<SoyBoySync>();
 
-            _audioSource.PlayOneShot(_knifeHitAudioClip);
-            _playerInRange.TagPlayer(this._playerDataSync);
+            Debug.Log("Shanked this player: " + _playerSync._isTagged);
+            _audioSource.PlayOneShot(_knifeHitAudioClip, 2);
+            _playerSync.TagPlayer(this._playerDataSync);
         }
     }
 
