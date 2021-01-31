@@ -137,6 +137,16 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
     private void UpdateTaggedState(bool isTagged)
     {
         _isTagged = isTagged;
+
+        if(isTagged)
+        {
+            _meshRenderer.enabled = false;
+        }
+        else
+        {
+            _meshRenderer.enabled = true;   
+        }
+
         onTagged.Invoke();
     }
 

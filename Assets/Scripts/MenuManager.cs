@@ -94,10 +94,6 @@ public class MenuManager : MonoBehaviour
     {
         player.SetPlayerName(player.playerNames[Random.Range(0, player.playerNames.Count)]);
 
-        player.onTagged.AddListener(() => {
-            _youGotCaughtText.SetActive(true);
-        });
-
         // Spawn as Hider
         if (IsSomeoneSeeker())
         {
@@ -219,6 +215,14 @@ public class MenuManager : MonoBehaviour
         if (_gameManager._gameManagerSync._gameState == 2)
         {
             SetActiveMenu(1);
+
+            if (_gameManager._localPlayer._type == 0)
+            {
+                _gameManager._localPlayer.onTagged.AddListener(() => {
+                    _youGotCaughtText.SetActive(true);
+                });
+            }
+
             _gameStatusText.text = "Go Hide!";
             
             // Janky way to prevent double corroutine counting down UI too quickly
