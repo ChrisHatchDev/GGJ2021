@@ -432,6 +432,8 @@ public class SoyCharacterController : MonoBehaviour
 
         _cc.height = 0.05f;
         _cc.center = new Vector3(_cc.center.x, -0.9f, _cc.center.z);
+
+        _audioSource.PlayOneShot(_deathAudioClips[0], 0.25f);
     }
 
     void Crouch()
@@ -450,5 +452,7 @@ public class SoyCharacterController : MonoBehaviour
 
         _cc.height = 1.2f;
         _cc.center = new Vector3(_cc.center.x, -0.46f, _cc.center.z);
+
+        _audioSource.PlayOneShot(_deathAudioClips[1], 0.25f);
     }
 }
