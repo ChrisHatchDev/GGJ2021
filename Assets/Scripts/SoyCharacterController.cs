@@ -129,7 +129,7 @@ public class SoyCharacterController : MonoBehaviour
         _playerDataSync.SetKnifeState(_playerDataSync._knifeState + 1);
 
         _ccAnim.SetTrigger("Stab");
-        _audioSource.PlayOneShot(_knifeMissAudioClip, 2.5f);
+        _audioSource.PlayOneShot(_knifeMissAudioClip, 3f);
 
         foreach (var playerInRange in _playersInRange)
         {
@@ -347,7 +347,7 @@ public class SoyCharacterController : MonoBehaviour
 
         // Reset since we use a trigger
         _ccAnim.SetTrigger("Stab");
-        _audioSource.PlayOneShot(_knifeMissAudioClip, 2.5f);
+        _audioSource.PlayOneShot(_knifeMissAudioClip, 3f);
     }
 
     void RemoteAnimStateUpdate ()

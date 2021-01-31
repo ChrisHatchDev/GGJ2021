@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
             bool atLeastOnePlayerIsAlive = false;
             foreach (var remoteP in _remotePlayers)
             {
-                if (remoteP._isTagged == false && remoteP._type == 0)
+                if (remoteP._isTagged == false)
                 {
                     atLeastOnePlayerIsAlive = true;
                 }

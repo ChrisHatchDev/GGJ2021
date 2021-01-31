@@ -226,7 +226,6 @@ public class MenuManager : MonoBehaviour
         if (_gameManager._gameManagerSync._gameState == 2)
         {
             SetActiveMenu(1);
-
             _gameStatusText.text = "Go Hide!";
             
             // Janky way to prevent double corroutine counting down UI too quickly
