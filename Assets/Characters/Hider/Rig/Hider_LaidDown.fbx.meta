@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: dd560467af66642ef850812d2071f77f
+guid: 8ab7f1544c4624447a69e15ef7abf9c5
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: 365937233670209455
-    second: Hider_Idle
+      74: 8941070389645215903
+    second: Hider_Laydown
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,8 +35,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Hider_Idle
-      takeName: Hider_Idle
+      name: Hider_Laydown
+      takeName: Hider_Laydown
       internalID: 0
       firstFrame: 1
       lastFrame: 60
@@ -46,8 +46,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0

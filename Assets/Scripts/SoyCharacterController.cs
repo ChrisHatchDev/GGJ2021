@@ -35,6 +35,10 @@ public class SoyCharacterController : MonoBehaviour
     [SerializeField]private bool _isGrounded;
     private float _groundDistance = 0.2f;
 
+
+    [SerializeField]
+    private Animator _ccAnim;
+
     [SerializeField]
     private bool _crouchButtonPressed;
     private float _timeCrouchHasBeenPressed = 0.0f;
@@ -174,6 +178,7 @@ public class SoyCharacterController : MonoBehaviour
             _menuManager.InitializeUpdateEvents(this._playerDataSync);
         }
 
+        // Maybe move crouch further down to disable it while in lobby, but for now have fun
         CrouchLogic();
 
         // Regardless of Player Type if we are in lobby, dont enable character controller
@@ -222,6 +227,8 @@ public class SoyCharacterController : MonoBehaviour
         {
             EnableCameraControls();
         }
+
+    // Made it to player is in game and should be able to control their character
 
         CheckForPlayersInRange();
 
@@ -279,26 +286,38 @@ public class SoyCharacterController : MonoBehaviour
             {
                 _speedToUse *= 0.5f;
             }
-
+            
+            // Trigger Walk Animation
+            if (Mathf.Abs(_vertical) > 0.1f || Mathf.Abs(_horizontal) > 0.1f)
+            {
+                _ccAnim.SetFloat("WalkSpeed", 1);
+            }
+            else
+            {
+                _ccAnim.SetFloat("WalkSpeed", 0);
+            }
+            
             _cc.Move(_moveDir.normalized * _speedToUse * Time.deltaTime);
         }
     }
 
     void RemoteCrouchLogicResponse ()
     {
-        if (_playerDataSync._stance == 2)
+        _stanceState = _playerDataSync._stance;
+
+        if (_stanceState == 2)
         {
             Debug.Log("Should Go Prone");
             GoProne();
         }
         
-        if (_playerDataSync._stance == 1)
+        if (_stanceState == 1)
         {
             Debug.Log("Should Crouch Only");
             Crouch();
         }
 
-        if (_playerDataSync._stance == 0)
+        if (_stanceState == 0)
         {
             StandUp();
         }
@@ -326,24 +345,32 @@ public class SoyCharacterController : MonoBehaviour
         if (_crouchButtonPressed && _timeCrouchHasBeenPressed > 0.5f)
         {
             Debug.Log("Should Go Prone");
-            GoProne();
-        }
-        
-        if (_crouchButtonPressed && _timeCrouchHasBeenPressed < 1)
-        {
-            Debug.Log("Should Crouch Only");
-            Crouch();
+            if (_stanceState != 2)
+            {
+                GoProne();
+            }
         }
 
-        if (_crouchButtonPressed == false)
+        if (Input.GetKeyDown(KeyCode.C) && _timeCrouchHasBeenPressed < 0.5f)
         {
-            StandUp();
+            Debug.Log("Should Crouch Only");
+            // If we are already crouched standup. If not, then crouch
+            if(_stanceState == 1 || _stanceState == 2)
+            {
+                StandUp();
+            }
+            else
+            {
+                Crouch();
+            }
         }
     }
 
     void GoProne()
     {
         _stanceState = 2;
+        _ccAnim.SetInteger("Stance", _stanceState);
+
         _cc.height = 0.2f;
         _cc.center = new Vector3(_cc.center.x, -0.82f, _cc.center.z);
     }
@@ -351,6 +378,8 @@ public class SoyCharacterController : MonoBehaviour
     void Crouch()
     {
         _stanceState = 1;
+        _ccAnim.SetInteger("Stance", _stanceState);
+
         _cc.height = 0.6f;
         _cc.center = new Vector3(_cc.center.x, -0.71f, _cc.center.z);
     }
@@ -358,6 +387,8 @@ public class SoyCharacterController : MonoBehaviour
     void StandUp()
     {
         _stanceState = 0;
+        _ccAnim.SetInteger("Stance", _stanceState);
+
         _cc.height = 1.2f;
         _cc.center = new Vector3(_cc.center.x, -0.47f, _cc.center.z);
     }
