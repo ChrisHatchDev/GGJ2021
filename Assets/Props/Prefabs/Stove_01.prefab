@@ -470,6 +470,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stove_01
       objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 094919704caf67e4385805facdba7d94, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 094919704caf67e4385805facdba7d94, type: 3}
 --- !u!4 &9019908654593477311 stripped
