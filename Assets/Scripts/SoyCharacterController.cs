@@ -111,13 +111,10 @@ public class SoyCharacterController : MonoBehaviour
 
     public void Shank()
     {
-        Debug.Log("Shank called player in range: " + _playerInRange);
-
         if (_playerInRange != null)
         {
             Debug.Log("Shanked this player: " + _playerInRange._isTagged);
             _playerInRange.TagPlayer(this._playerDataSync);
-            Debug.Log("Shanked this player: " + _playerInRange._isTagged);
         }
     }
 
@@ -137,11 +134,6 @@ public class SoyCharacterController : MonoBehaviour
 
     void GoIntoBlackScreenMode()
     {
-        //Hide Camera View as Stub for Black Screen
-        if (_cam.enabled == true)
-        {
-            _cam.enabled = false;
-        }
         DisableCameraControls();
     }
 
@@ -174,13 +166,14 @@ public class SoyCharacterController : MonoBehaviour
         {
             _gameManager.InitializePlayerObject(this._playerDataSync, false);
             _menuManager.InitializeUpdateEvents(this._playerDataSync);
+            _menuManager.InitializeLocalPlayerMenuItems(this._playerDataSync);
         }
 
         // Maybe move crouch further down to disable it while in lobby, but for now have fun
         CrouchLogic();
 
         // Regardless of Player Type if we are in lobby, dont enable character controller
-        if (_gameManager._gameManagerSync._gameState == 0)
+        if (_gameManager._gameManagerSync._gameState == 0 || _playerDataSync._isTagged)
         {
             return; // Dont allow movement
         }
@@ -228,11 +221,13 @@ public class SoyCharacterController : MonoBehaviour
 
     // Made it to player is in game and should be able to control their character
 
-        CheckForPlayersInRange();
-
-        if (Input.GetMouseButtonDown(0))
+        if (_playerDataSync._type == 1)
         {
-            Shank();
+            CheckForPlayersInRange();
+            if (Input.GetMouseButtonDown(0))
+            {
+                Shank();
+            }
         }
 
         if (_camFreeLook.enabled == false) {

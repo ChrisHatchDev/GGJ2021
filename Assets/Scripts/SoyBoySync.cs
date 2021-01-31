@@ -142,7 +142,7 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
                 currentModel.isTagged = false;
                 currentModel.stanceState = 0;
                 currentModel.walkingState = 0;
-                currentModel.playerName = "";
+                // currentModel.playerName = "";
             }
         
             // Update the mesh render to match the new model
@@ -165,7 +165,6 @@ public class SoyBoySync : RealtimeComponent<PlayerDataModel>
         if(_taggingPlayer._type == 1)
         {
             SetTaggedState(true);
-            onTagged.Invoke();
         }
     }
 }

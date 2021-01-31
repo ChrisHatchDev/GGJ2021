@@ -17,6 +17,12 @@ public class MenuManager : MonoBehaviour
     public GameObject _inGameMenu;
 
     [SerializeField]
+    public GameObject _gameOverScreen;
+
+    [SerializeField]
+    public GameObject _youGotCaughtText;
+
+    [SerializeField]
     public Button _becomeHiderButton;
 
     [SerializeField]
@@ -49,6 +55,15 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     public Text _hidingTimerText;
 
+    [SerializeField]
+    public Text _objectiveText;
+
+    [SerializeField]
+    public Transform _playersLeftGrid;
+
+    [SerializeField]
+    public GameObject _playersLeftUIPrefab;
+
     public PlayerCardUIManager _activeHiderCard = null;
 
     private int hidingTimer = 0;
@@ -69,15 +84,16 @@ public class MenuManager : MonoBehaviour
         ToggleStartButton(_gameManager.CanStartGame());
     }
 
-    public void InitializeUpdateEvents(SoyBoySync player)
+    public void InitializeLocalPlayerMenuItems(SoyBoySync player)
     {
+        player.SetPlayerName(player.playerNames[Random.Range(0, player.playerNames.Count)]);
+
         // Spawn as Hider
         if (IsSomeoneSeeker())
         {
             player.SetPlayerType(0);
 
             PlayerCardUIManager newCard = Instantiate(_hidersCardPrefab, transform.position, Quaternion.identity, _hidersGrid).GetComponent<PlayerCardUIManager>();
-            player.SetPlayerName(player.playerNames[Random.Range(0, player.playerNames.Count)]);
             newCard.InitializeCard(player);
             _hiderCards.Add(newCard);
             _activeHiderCard = newCard;
@@ -88,21 +104,26 @@ public class MenuManager : MonoBehaviour
         {
             // Spawn as Seeker Filling that Spot
             player.SetPlayerType(1);
-            player.SetPlayerName(player.playerNames[Random.Range(0, player.playerNames.Count)]);
             _seekerCard.InitializeCard(player);
 
             _yourNameText.text = "Your Name: " + player._playerName;
         }
+    }
 
-        player.onTypeChange.AddListener(OnTypeChange);
-
+    public void InitializeUpdateEvents(SoyBoySync player)
+    {        
         _gameManager._gameManagerSync.onGameStateChange.AddListener(UpdateGameStatusText);
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
+        
+        player.onTypeChange.AddListener(RefreshUIStates);
+
+        player.onTagged.AddListener(() => {
+            _youGotCaughtText.SetActive(true);
+        });
 
         LobbyStatusChanged();
         UpdateGameStatusText();
-        UpdateTextObjects();
-        OnTypeChange();
+        RefreshUIStates();
     }
 
     PlayerCardUIManager GetRemotePlayerCard(SoyBoySync remoteP)
@@ -120,22 +141,11 @@ public class MenuManager : MonoBehaviour
         return _hiderCardToRemove;
     }
 
-    void OnTypeChange()
+    void RefreshUIStates()
     {
         Debug.Log("Menu Manager On Type Changed Ran");
-        if (_gameManager._localPlayer?._type == 0)
-        {
-            _becomeHiderButton.interactable = false;
-            _becomeSeekerButton.interactable = true;
-        }
-        else if (_gameManager._localPlayer?._type == 1)
-        {
-            _becomeHiderButton.interactable = true;
-            _becomeSeekerButton.interactable = false;
-        }
         
-        UpdateTextObjects();
-
+        // Refresh UI states based on remote data
         foreach (var remoteP in _gameManager._remotePlayers)
         {
             if (remoteP._type == 0 && GetRemotePlayerCard(remoteP) == null)
@@ -154,6 +164,26 @@ public class MenuManager : MonoBehaviour
                     Destroy(_remotePlayerCard.gameObject);
                 }
             }
+        }
+
+        if (_gameManager._localPlayer == null)
+        {
+            Debug.Log("Local PLayer is null in refresh UI state");
+            return;
+        }
+
+        // Refresh local UI states based on type
+        if (_gameManager._localPlayer._type == 0)
+        {
+            _becomeHiderButton.interactable = false;
+            _becomeSeekerButton.interactable = true;
+            _objectiveText.text = "Hide from the Seeker!\n\nUse cabinets, vents, baths, and more to hide.\n\nUse 'C' to crouch, hold to lay down";
+        }
+        else if (_gameManager._localPlayer._type == 1)
+        {
+            _becomeHiderButton.interactable = true;
+            _becomeSeekerButton.interactable = false;
+            _objectiveText.text = "Find the hiders!\n\nThey can be in cabinets, vents, baths, and more!\n\nUse 'Left Click' to attack/capture a hider";
         }
     }
 
@@ -195,6 +225,7 @@ public class MenuManager : MonoBehaviour
         if (_gameManager._gameManagerSync._gameState == 3)
         {
             _gameStatusText.text = "Game Over!";
+            SetActiveMenu(3);
         }
     }
 
@@ -205,6 +236,7 @@ public class MenuManager : MonoBehaviour
             _mainMenu.SetActive(true);
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(false);
+            _gameOverScreen.SetActive(false);
         }
         if (menuIndex == 1)
         {
@@ -214,12 +246,14 @@ public class MenuManager : MonoBehaviour
                 _mainMenu.SetActive(false);
                 _seekerDelayMenu.SetActive(true);
                 _inGameMenu.SetActive(false);
+                _gameOverScreen.SetActive(false);
             }
             else
             {
                 _mainMenu.SetActive(false);
                 _seekerDelayMenu.SetActive(false);
                 _inGameMenu.SetActive(true);
+                _gameOverScreen.SetActive(false);
             }
         }
         if (menuIndex == 2)
@@ -227,6 +261,14 @@ public class MenuManager : MonoBehaviour
             _mainMenu.SetActive(false);
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(true);
+            _gameOverScreen.SetActive(false);
+        }
+        if (menuIndex == 3)
+        {
+            _mainMenu.SetActive(false);
+            _seekerDelayMenu.SetActive(false);
+            _inGameMenu.SetActive(false);
+            _gameOverScreen.SetActive(true);
         }
     }
 
@@ -274,7 +316,7 @@ public class MenuManager : MonoBehaviour
 
             _seekerCard.ClearCardData();
 
-            UpdateTextObjects();
+            RefreshUIStates();
         }
     }
 
@@ -298,7 +340,7 @@ public class MenuManager : MonoBehaviour
         _gameManager._localPlayer.SetPlayerType(1);
 
         _seekerCard.InitializeCard(_gameManager._localPlayer);
-        UpdateTextObjects();
+        RefreshUIStates();
     }
 
     private bool IsSomeoneSeeker()
@@ -309,7 +351,6 @@ public class MenuManager : MonoBehaviour
             if (remoteP._type == 1)
             {
                 someoneElseIsSeeker = true;
-                _seekerCard.InitializeCard(remoteP);
             }
         }
 
