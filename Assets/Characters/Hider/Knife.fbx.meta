@@ -3,7 +3,22 @@ guid: c7338bd544aaade4383bbf90604883ad
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Counter Top
+    second: {fileID: 2100000, guid: 3063bd89d83030647a1925222c1c8fb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Silver
+    second: {fileID: 2100000, guid: 9216ddc238949444886e9b0c1f24c11a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood
+    second: {fileID: 2100000, guid: 266adec8dbebb8e4e8ed9b0d9e8f8a5f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
