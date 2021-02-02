@@ -7,6 +7,9 @@ using Rewired;
 
 public class SoyCharacterController : MonoBehaviour
 {
+    private Player player; // The Rewired Player
+    private int playerId = 0;
+
     [SerializeField]
     private CharacterController _cc;
 
@@ -70,6 +73,8 @@ public class SoyCharacterController : MonoBehaviour
     private void Awake() {
         _realtimeView = GetComponent<RealtimeView>();
         _realtimeTransform = GetComponent<RealtimeTransform>();
+        // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
+        player = ReInput.players.GetPlayer(playerId);
     }
 
     void Start()
@@ -176,6 +181,16 @@ public class SoyCharacterController : MonoBehaviour
 
     void Update()
     {
+
+        if (player.GetButtonDown("Crouch"))
+        {
+            Debug.Log("Crouch Called");
+        }
+        if (player.GetButtonDown("Action"))
+        {
+            Debug.Log("Action Called");
+        }
+
         if (this._playerDataSync._type == 0)
         {
             _knife.SetActive(false);
@@ -270,8 +285,9 @@ public class SoyCharacterController : MonoBehaviour
         if (_playerDataSync._type == 1)
         {
             CheckForPlayersInRange();
-            if (Input.GetMouseButtonDown(0))
+            if (player.GetButtonDown("Action"))
             {
+                Debug.Log("Shank Ran");
                 Shank();
             }
         }
@@ -297,8 +313,8 @@ public class SoyCharacterController : MonoBehaviour
         // Make sure we own the transform so that RealtimeTransform knows to use this client's transform to synchronize remote clients.
         _realtimeTransform.RequestOwnership();
 
-        float _horizontal = Input.GetAxis("Horizontal");
-        float _vertical = Input.GetAxis("Vertical");
+        float _horizontal = player.GetAxis("LeftHorizontal");
+        float _vertical = player.GetAxis("LeftVertical");
 
         Vector3 _direction = new Vector3(_horizontal, 0, _vertical).normalized;
 
@@ -385,13 +401,13 @@ public class SoyCharacterController : MonoBehaviour
 
     void CrouchLogic ()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (player.GetButtonDown("Crouch"))
         {
             _crouchButtonPressed = true;
             _timeCrouchHasBeenPressed = 0.0f;
         }
 
-        if (Input.GetKeyUp(KeyCode.C))
+        if (player.GetButtonUp("Crouch"))
         {
             _crouchButtonPressed = false;
             _timeCrouchHasBeenPressed = 0.0f;
@@ -411,7 +427,7 @@ public class SoyCharacterController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C) && _timeCrouchHasBeenPressed < 0.2f)
+        if (player.GetButtonDown("Crouch") && _timeCrouchHasBeenPressed < 0.2f)
         {
             Debug.Log("Should Crouch Only");
             // If we are already crouched standup. If not, then crouch

@@ -8,6 +8,9 @@ public class MenuManager : MonoBehaviour
     public GameManager _gameManager;
 
     [SerializeField]
+    public GameObject _touchControlsMenu;
+
+    [SerializeField]
     public GameObject _mainMenu;
 
     [SerializeField]
@@ -89,9 +92,12 @@ public class MenuManager : MonoBehaviour
     {
         ToggleStartButton(_gameManager.CanStartGame());
 
-        if (_gameManager._localPlayer._type == 0 && _gameManager._localPlayer._isTagged)
+        if (_gameManager._localPlayer != null)
         {
-            _youGotCaughtText.SetActive(true);
+            if (_gameManager._localPlayer._type == 0 && _gameManager._localPlayer._isTagged)
+            {
+                _youGotCaughtText.SetActive(true);
+            }
         }
     }
 
@@ -244,6 +250,7 @@ public class MenuManager : MonoBehaviour
 
     public void SetActiveMenu(int menuIndex)
     {
+        // Main Menu
         if (menuIndex == 0)
         {
             _mainMenu.SetActive(true);
@@ -251,6 +258,8 @@ public class MenuManager : MonoBehaviour
             _inGameMenu.SetActive(false);
             _gameOverScreen.SetActive(false);
         }
+
+        // Hide Delay Mode
         if (menuIndex == 1)
         {
             // If you are seeker show delay screen, if not, then show in game screen
@@ -268,14 +277,22 @@ public class MenuManager : MonoBehaviour
                 _inGameMenu.SetActive(true);
                 _gameOverScreen.SetActive(false);
             }
+
+            _touchControlsMenu.SetActive(SystemInfo.deviceType == DeviceType.Handheld);
         }
+
+        // In Game Mode
         if (menuIndex == 2)
         {
             _mainMenu.SetActive(false);
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(true);
             _gameOverScreen.SetActive(false);
+
+            _touchControlsMenu.SetActive(SystemInfo.deviceType == DeviceType.Handheld);
         }
+
+        // Game Over Screen
         if (menuIndex == 3)
         {
             _mainMenu.SetActive(false);
