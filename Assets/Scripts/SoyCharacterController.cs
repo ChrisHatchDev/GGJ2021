@@ -270,9 +270,7 @@ public class SoyCharacterController : MonoBehaviour
         // Return if game hasnt started yet or its hiding mode and you are the hider
         if (_gameManager._gameManagerSync._gameState == 0 || _gameManager._gameManagerSync._gameState == 3)
         {
-            Debug.Log("Game hasnt started or is over, don't move player");
             DisableCameraControls();
-
             return;
         }
         else
@@ -316,6 +314,26 @@ public class SoyCharacterController : MonoBehaviour
         float _horizontal = player.GetAxis("LeftHorizontal");
         float _vertical = player.GetAxis("LeftVertical");
 
+        // Trigger Walk Animation
+        if (Mathf.Abs(_vertical) > 0.1f || Mathf.Abs(_horizontal) > 0.1f)
+        {
+            Debug.Log("Set walking to true");
+
+            if (_playerDataSync._walkingState == 0) {
+                _ccAnim.SetFloat("WalkSpeed", 1);
+                _playerDataSync.SetWalkingStateState(1);
+            }
+        }
+        else
+        {
+            Debug.Log("Set walking to false");
+
+            if (_playerDataSync._walkingState == 1) {
+                _ccAnim.SetFloat("WalkSpeed", 0);
+                _playerDataSync.SetWalkingStateState(0);
+            }
+        }
+
         Vector3 _direction = new Vector3(_horizontal, 0, _vertical).normalized;
 
         if (_direction.magnitude >= 0.1f)
@@ -340,18 +358,6 @@ public class SoyCharacterController : MonoBehaviour
             else if (_playerDataSync._stance == 2)
             {
                 _speedToUse *= 0.65f;
-            }
-            
-            // Trigger Walk Animation
-            if (Mathf.Abs(_vertical) > 0.1f || Mathf.Abs(_horizontal) > 0.1f)
-            {
-                _ccAnim.SetFloat("WalkSpeed", 1);
-                _playerDataSync.SetWalkingStateState(1);
-            }
-            else
-            {
-                _ccAnim.SetFloat("WalkSpeed", 0);
-                _playerDataSync.SetWalkingStateState(0);
             }
             
             _cc.Move(_moveDir.normalized * _speedToUse * Time.deltaTime);
