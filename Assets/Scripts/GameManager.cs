@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     public GameManagerSync _gameManagerSync;
 
+    public Realtime _realtime;
+
+    public string _newRoomCode = "";
+
+    public string _connectedRoomCode = "";
+
     [HideInInspector]
     public SoyBoySync _localPlayer;
 
     [HideInInspector]
     public List<SoyBoySync> _remotePlayers = new List<SoyBoySync>();
+
+    public UnityEvent _onConnectToRoom;
+
+    public UnityEvent _onDisconnectFromRoom;
 
     public void InitializePlayerObject(SoyBoySync player, bool isRemote)
     {
@@ -27,12 +38,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        _realtime.didConnectToRoom += DidConnectToRoom;
+        _realtime.didDisconnectFromRoom += DidDisconnectFromRoom;
     }
 
     void Update()
     {
-        if (_gameManagerSync._gameState == 1 && _remotePlayers.Count > 0)
+        if (_gameManagerSync._gameState == 2 && _remotePlayers.Count > 0)
         {
             bool atLeastOnePlayerIsAlive = false;
             foreach (var remoteP in _remotePlayers)
@@ -51,7 +63,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void GameOver()
-    {   
+    {
         Debug.Log("Game Over, All People Have Been Caught");
         _gameManagerSync.SetGameState(3);
     }
@@ -59,6 +71,60 @@ public class GameManager : MonoBehaviour
     public bool CanStartGame()
     {
         return _remotePlayers.Count > 0;
+    }
+
+    public bool IsRoomCodeSet()
+    {
+        return (_newRoomCode != "");
+    }
+
+    public void JoinGame (string roomName)
+    {
+        roomName = roomName.ToUpper();
+
+        Debug.Log("Join game called with room name: " + roomName);
+        _newRoomCode = roomName;
+        _realtime.Connect(roomName);
+    }
+
+    public void DisconnectFromRoom()
+    {
+        _realtime.Disconnect();
+    }
+
+    private void DidDisconnectFromRoom(Realtime realtime)
+    {
+        _newRoomCode = "";
+        _connectedRoomCode = "";
+
+        _onDisconnectFromRoom.Invoke();
+        Debug.Log("Did disconnect from the host server");
+    }
+
+    public void HostGame()
+    {
+        string _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+        char[] randomRoomCode = new char[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            randomRoomCode[i] = _letters[Random.Range(0, _letters.Length)];
+        }
+
+        this._newRoomCode = new string(randomRoomCode);
+
+        // Debug.Log("Random room name: " + new string(randomRoomCode));
+        _realtime.Connect(_newRoomCode);
+    }
+
+    private void DidConnectToRoom(Realtime realtime)
+    {
+        _connectedRoomCode = _newRoomCode;
+
+        _gameManagerSync.SetGameState(1);
+
+        _onConnectToRoom.Invoke();
+        Debug.Log("Did connect to host server");
     }
 
     public void StartGame ()
@@ -112,11 +178,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Start Hiding");
 
-        _gameManagerSync.SetGameState(2);
+        _gameManagerSync.SetGameState(3);
         yield return new WaitForSeconds(20f);
         
         Debug.Log("Hiding has ended");
-        _gameManagerSync.SetGameState(1);
+        _gameManagerSync.SetGameState(2);
     }
 
     public void RestartGame()
@@ -129,6 +195,6 @@ public class GameManager : MonoBehaviour
         }
 
         _gameManagerSync.SetLobbyStatus("REMATCH!");
-        _gameManagerSync.SetGameState(0);
+        _gameManagerSync.SetGameState(1);
     }
 }

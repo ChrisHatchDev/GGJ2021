@@ -8,6 +8,9 @@ public class MenuManager : MonoBehaviour
     public GameManager _gameManager;
 
     [SerializeField]
+    public InputField _roomCodeInput;
+
+    [SerializeField]
     public GameObject _touchControlsMenu;
 
     [SerializeField]
@@ -18,6 +21,9 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     public GameObject _inGameMenu;
+
+    [SerializeField]
+    public GameObject _lobbyMenu;
 
     [SerializeField]
     public GameObject _gameOverScreen;
@@ -33,6 +39,9 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     public Button _startGameButton;
+
+    [SerializeField]
+    public Button _hostGameButton;
 
     [SerializeField]
     public Transform _hidersGrid;
@@ -67,6 +76,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     public Text _objectiveText;
 
+    public Text _currentRoomCodeText;
+
     [SerializeField]
     public Transform _playersLeftGrid;
 
@@ -81,6 +92,19 @@ public class MenuManager : MonoBehaviour
     {
         _lobbyTipText.text = "_UnsetLobbyTip";
         _gameStatusText.text = "Waiting for Players to Join...";
+
+        _gameManager._onConnectToRoom.AddListener(OnConnectToRoom);
+        _gameManager._onDisconnectFromRoom.AddListener(OnDisconnectFromRoom);
+    }
+
+    public void OnConnectToRoom()
+    {
+        SetActiveMenu(3);
+    }
+
+    public void OnDisconnectFromRoom()
+    {
+        SetActiveMenu(0);
     }
 
     public void ToggleStartButton(bool onOff)
@@ -88,9 +112,17 @@ public class MenuManager : MonoBehaviour
         _startGameButton.interactable = onOff;
     }
 
+    public void ToggleHostButton(bool onOff)
+    {
+        _hostGameButton.interactable = onOff;
+    }
+
     private void Update()
     {
-        ToggleStartButton(_gameManager.CanStartGame());
+        ToggleHostButton(_gameManager.IsRoomCodeSet() == false);
+        ToggleStartButton(_gameManager._remotePlayers.Count > 0);
+
+        _currentRoomCodeText.text = _gameManager._connectedRoomCode;
 
         if (_gameManager._localPlayer != null)
         {
@@ -128,7 +160,7 @@ public class MenuManager : MonoBehaviour
     }
 
     public void InitializeUpdateEvents(SoyBoySync player)
-    {        
+    {
         _gameManager._gameManagerSync.onGameStateChange.AddListener(UpdateGameStatusText);
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
         
@@ -214,22 +246,34 @@ public class MenuManager : MonoBehaviour
             return;
         }
 
+        // Main Menu
         if (_gameManager._gameManagerSync._gameState == 0)
         {
             SetActiveMenu(0);
+            _gameStatusText.text = "Join or Create a Game";
+        }
+
+        // In Lobby
+        if (_gameManager._gameManagerSync._gameState == 1)
+        {
+            SetActiveMenu(3);
             if(IsSomeoneSeeker())
             {
-                _gameStatusText.text = "Waiting to start";
+                _gameStatusText.text = "Waiting To Start";
                 return;
             }
             _gameStatusText.text = "Someone needs to be seeker";
         }
-        if (_gameManager._gameManagerSync._gameState == 1)
+
+        // Game is In Progress
+        if (_gameManager._gameManagerSync._gameState == 2)
         {
             SetActiveMenu(2);
             _gameStatusText.text = "Game is In Progress";
         }
-        if (_gameManager._gameManagerSync._gameState == 2)
+
+        // Hiding in Progress
+        if (_gameManager._gameManagerSync._gameState == 3)
         {
             SetActiveMenu(1);
             _gameStatusText.text = "Go Hide!";
@@ -241,10 +285,12 @@ public class MenuManager : MonoBehaviour
                 StartCoroutine(HidingSequenceTimer());
             }
         }
-        if (_gameManager._gameManagerSync._gameState == 3)
+
+        // Game is Over
+        if (_gameManager._gameManagerSync._gameState == 4)
         {
             _gameStatusText.text = "Game Over!";
-            SetActiveMenu(3);
+            SetActiveMenu(4);
         }
     }
 
@@ -257,6 +303,7 @@ public class MenuManager : MonoBehaviour
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(false);
             _gameOverScreen.SetActive(false);
+            _lobbyMenu.SetActive(false);
         }
 
         // Hide Delay Mode
@@ -269,6 +316,7 @@ public class MenuManager : MonoBehaviour
                 _seekerDelayMenu.SetActive(true);
                 _inGameMenu.SetActive(false);
                 _gameOverScreen.SetActive(false);
+                _lobbyMenu.SetActive(false);
             }
             else
             {
@@ -276,6 +324,7 @@ public class MenuManager : MonoBehaviour
                 _seekerDelayMenu.SetActive(false);
                 _inGameMenu.SetActive(true);
                 _gameOverScreen.SetActive(false);
+                _lobbyMenu.SetActive(false);
             }
 
             _touchControlsMenu.SetActive(SystemInfo.deviceType == DeviceType.Handheld);
@@ -288,17 +337,29 @@ public class MenuManager : MonoBehaviour
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(true);
             _gameOverScreen.SetActive(false);
+            _lobbyMenu.SetActive(false);
 
             _touchControlsMenu.SetActive(SystemInfo.deviceType == DeviceType.Handheld);
         }
 
-        // Game Over Screen
+        // Lobby Screen
         if (menuIndex == 3)
+        {
+            _mainMenu.SetActive(true);
+            _seekerDelayMenu.SetActive(false);
+            _inGameMenu.SetActive(false);
+            _gameOverScreen.SetActive(false);
+            _lobbyMenu.SetActive(true);
+        }
+
+        // Game Over Screen
+        if (menuIndex == 4)
         {
             _mainMenu.SetActive(false);
             _seekerDelayMenu.SetActive(false);
             _inGameMenu.SetActive(false);
             _gameOverScreen.SetActive(true);
+            _lobbyMenu.SetActive(false);
         }
     }
 
@@ -340,6 +401,16 @@ public class MenuManager : MonoBehaviour
     void AddHiderCard()
     {
         
+    }
+
+    public void JoinGame()
+    {
+        _gameManager.JoinGame(_roomCodeInput.text);
+    }
+
+    public void DisconnectFromServer()
+    {
+        _gameManager.DisconnectFromRoom();
     }
 
     public void ChooseHider()

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GameManagerSync : RealtimeComponent<GameDataModel>
 {
-    // 0 = "In Lobby", 1 = "In Game", 2 = "Hiding Time!",  3 = "Game Over"
+    // 0 = "Main Menu", 1 = "In Lobby", 2 = "In Game", 3 = "Hiding Time!",  4 = "Game Over"
     public int _gameState = 0;
 
     public string _lobbyStatus = "";
@@ -54,11 +54,11 @@ public class GameManagerSync : RealtimeComponent<GameDataModel>
     {
         model.gameState = gameState;
 
-        if (gameState == 0 || gameState == 3)
+        if (gameState == 0 || gameState == 1 || gameState == 4)
         {
             Cursor.lockState = CursorLockMode.Confined;
         }
-        if (gameState == 1 || gameState == 2)
+        if (gameState == 2 || gameState == 3)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }

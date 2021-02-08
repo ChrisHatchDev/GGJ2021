@@ -233,7 +233,7 @@ public class SoyCharacterController : MonoBehaviour
         CrouchLogic();
 
         // Regardless of Player Type if we are in lobby, dont enable character controller
-        if (_gameManager._gameManagerSync._gameState == 0 || _playerDataSync._isTagged)
+        if (_gameManager._gameManagerSync._gameState == 0 || _gameManager._gameManagerSync._gameState == 1  || _playerDataSync._isTagged)
         {
             return; // Dont allow movement
         }
@@ -241,9 +241,8 @@ public class SoyCharacterController : MonoBehaviour
         // Player is Seeker
         if (_gameManager._localPlayer._type == 1)
         {
-
-            if (_gameManager._gameManagerSync._gameState == 2)
-            { 
+            if (_gameManager._gameManagerSync._gameState == 3)
+            {
                 GoIntoBlackScreenMode();
                 DisableCameraControls();
                 return; // Dont allow movement
@@ -255,25 +254,20 @@ public class SoyCharacterController : MonoBehaviour
             }
         }
 
+        int _gameState = _gameManager._gameManagerSync._gameState;
+
         // Player is Hider
         if (_gameManager._localPlayer._type == 0)
         {
-            int _gameState = _gameManager._gameManagerSync._gameState;
-
-            if (_gameState == 0 || _gameState == 3)
+            if (_gameState == 0 || _gameState == 1 || _gameState == 4)
             {
                 DisableCameraControls();
                 return; // Dont allow movement
             }
         }
 
-        // Return if game hasnt started yet or its hiding mode and you are the hider
-        if (_gameManager._gameManagerSync._gameState == 0 || _gameManager._gameManagerSync._gameState == 3)
-        {
-            DisableCameraControls();
-            return;
-        }
-        else
+        // If we are in game or hiding, then we should be enabled renabled controls
+        if (_gameState == 2)
         {
             EnableCameraControls();
         }
