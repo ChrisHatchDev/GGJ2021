@@ -163,6 +163,7 @@ public class MenuManager : MonoBehaviour
     {
         _gameManager._gameManagerSync.onGameStateChange.AddListener(UpdateGameStatusText);
         _gameManager._gameManagerSync.onLobbyStatusChange.AddListener(LobbyStatusChanged);
+        _gameManager._gameManagerSync.onGameRestart.AddListener(OnGameRestart);
         
         player.onTypeChange.AddListener(RefreshUIStates);
         player.onTagged.AddListener(() => {
@@ -190,6 +191,11 @@ public class MenuManager : MonoBehaviour
         }
 
         return _hiderCardToRemove;
+    }
+
+    void OnGameRestart()
+    {
+        hidingTimer = 0;
     }
 
     void RefreshUIStates()

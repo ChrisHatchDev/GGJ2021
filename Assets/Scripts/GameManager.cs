@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (atLeastOnePlayerIsAlive == false)
+            if (atLeastOnePlayerIsAlive == false && _gameManagerSync._gameState != 4)
             {
                 GameOver();
             }
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over, All People Have Been Caught");
-        _gameManagerSync.SetGameState(3);
+        _gameManagerSync.SetGameState(4);
     }
 
     public bool CanStartGame()

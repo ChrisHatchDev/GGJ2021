@@ -18,6 +18,7 @@ public class GameManagerSync : RealtimeComponent<GameDataModel>
     public UnityEvent onGameStateChange;
     public UnityEvent onGameWinnerChange;
     public UnityEvent onLobbyStatusChange;
+    public UnityEvent onGameRestart;
 
     private void Awake()
     {
@@ -52,6 +53,11 @@ public class GameManagerSync : RealtimeComponent<GameDataModel>
 
     public void SetGameState (int gameState)
     {
+        if (model.gameState == 4 && gameState == 1)
+        {
+            this.onGameRestart.Invoke();
+        }
+
         model.gameState = gameState;
 
         if (gameState == 0 || gameState == 1 || gameState == 4)
@@ -63,7 +69,6 @@ public class GameManagerSync : RealtimeComponent<GameDataModel>
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
-
 
     private void WinnerNameDidChange(GameDataModel model, string playerName)
     {
